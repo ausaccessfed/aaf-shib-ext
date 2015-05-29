@@ -1,7 +1,12 @@
+plugins {
+    id 'net.saliman.cobertura' version '2.2.7'
+}
+
 apply plugin: 'java'
 apply plugin: 'findbugs'
 apply plugin: 'pmd'
 apply plugin: 'checkstyle'
+apply plugin: 'cobertura'
 
 def shibboleth_idp_version = '3.1.1'
 
@@ -11,6 +16,7 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    jcenter()
     maven {
         url 'https://build.shibboleth.net/nexus/content/repositories/releases/'
     }
@@ -21,8 +27,10 @@ dependencies {
     compile 'net.shibboleth.idp:idp-attribute-resolver-api:' + shibboleth_idp_version
     compile 'net.shibboleth.idp:idp-attribute-resolver-impl:' + shibboleth_idp_version
     compile 'net.shibboleth.idp:idp-attribute-resolver-spring:' + shibboleth_idp_version
+    // + logging framework when the right fit has been found +
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:2.0.5-beta"
 }
 
 findbugs {
