@@ -1,7 +1,11 @@
 apply plugin: 'java'
+apply plugin: 'findbugs'
+apply plugin: 'pmd'
+apply plugin: 'checkstyle'
 
 def shibboleth_idp_version = '3.1.1'
 
+group = 'au.edu.aaf'
 version = '1.0.0'
 sourceCompatibility = 1.8
 
@@ -21,3 +25,36 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
+findbugs {
+    ignoreFailures = false
+    effort = "max"
+}
+
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
+
+pmd {
+    ruleSets = [
+            'java-basic',
+            'java-codesize',
+            'java-empty',
+            'java-javabeans',
+            'java-strictexception',
+            'java-strings',
+            'java-typeresolution',
+            'java-unnecessary',
+            'java-unusedcode'
+    ]
+    ignoreFailures = false
+    sourceSets = [sourceSets.main]
+}
+
+checkstyle {
+    configFile = new File(rootDir, "config/checkstyle.xml")
+    ignoreFailures = false
+    sourceSets = [sourceSets.main]
+}
