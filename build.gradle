@@ -3,7 +3,7 @@ apply plugin: 'java'
 def shibboleth_idp_version = '3.1.1'
 
 version = '1.0.0'
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
