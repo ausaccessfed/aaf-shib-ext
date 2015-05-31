@@ -30,8 +30,6 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
     }
 
 
-
-
     /**
      *
      */

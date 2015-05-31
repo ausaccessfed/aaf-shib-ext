@@ -1,13 +1,14 @@
 package au.edu.aaf.shibext.sharedtoken;
 
 import net.shibboleth.idp.attribute.resolver.context.AttributeResolutionContext;
-import net.shibboleth.idp.attribute.resolver.context.AttributeResolverWorkContext;
+import net.shibboleth.idp.attribute.resolver.context
+        .AttributeResolverWorkContext;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 /**
  *
@@ -29,3 +30,4 @@ public class SharedTokenDataConnectorTest {
 
     }
 }
+
