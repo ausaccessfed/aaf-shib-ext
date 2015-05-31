@@ -7,6 +7,5 @@ public class ShibExtensionNamespaceHandlerTest {
 
     @Test
     public void testInit() throws Exception {
-
     }
 }
