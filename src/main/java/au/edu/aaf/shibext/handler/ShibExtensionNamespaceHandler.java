@@ -15,7 +15,5 @@ public class ShibExtensionNamespaceHandler extends BaseSpringNamespaceHandler {
         registerBeanDefinitionParser(
                 SharedTokenDataConnectorBeanDefinitionParser.TYPE_NAME,
                 new SharedTokenDataConnectorBeanDefinitionParser());
-
-
     }
 }

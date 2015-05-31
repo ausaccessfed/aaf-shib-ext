@@ -23,7 +23,6 @@ public class SharedTokenDataConnectorTest {
 
         assertThat(sharedTokenDataConnector,
                 is(notNullValue()));
-
     }
 }
 

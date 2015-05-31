@@ -16,6 +16,7 @@ public class SharedTokenDataConnectorBeanDefinitionParser extends
         AbstractDataConnectorParser {
 
     public static final QName SCHEMA_TYPE = new QName(ShibExtensionNamespaceHandler.NAMESPACE, "SharedToken");
+
     public static final QName TYPE_NAME = new QName(ShibExtensionNamespaceHandler.NAMESPACE, "SharedToken");
 
     @Override
@@ -35,7 +36,5 @@ public class SharedTokenDataConnectorBeanDefinitionParser extends
             pluginBuilder.addPropertyValue("generatedAttributeId",
                     "auEduPersonSharedToken");
         }
-
-
     }
 }

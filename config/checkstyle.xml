@@ -130,5 +130,10 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="severity" value="warning"/>
     </module>
 
+    <module name="EmptyLineSeparator">
+      <property name="allowNoEmptyLineBetweenFields" value="true"/>
+      <property name="allowMultipleEmptyLines" value="false"/>
+    </module>
+
   </module>
 </module>
