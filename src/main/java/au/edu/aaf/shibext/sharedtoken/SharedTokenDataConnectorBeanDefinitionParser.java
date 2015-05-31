@@ -2,8 +2,7 @@ package au.edu.aaf.shibext.sharedtoken;
 
 import au.edu.aaf.shibext.handler.ShibExtensionNamespaceHandler;
 import net.shibboleth.idp.attribute.resolver.AbstractDataConnector;
-import net.shibboleth.idp.attribute.resolver.spring.dc
-        .AbstractDataConnectorParser;
+import net.shibboleth.idp.attribute.resolver.spring.dc.AbstractDataConnectorParser;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.ParserContext;
 
@@ -16,10 +15,8 @@ import javax.xml.namespace.QName;
 public class SharedTokenDataConnectorBeanDefinitionParser extends
         AbstractDataConnectorParser {
 
-    public static final QName SCHEMA_TYPE = new QName
-            (ShibExtensionNamespaceHandler.NAMESPACE, "SharedToken");
-    public static final QName TYPE_NAME = new QName
-            (ShibExtensionNamespaceHandler.NAMESPACE, "SharedToken");
+    public static final QName SCHEMA_TYPE = new QName(ShibExtensionNamespaceHandler.NAMESPACE, "SharedToken");
+    public static final QName TYPE_NAME = new QName(ShibExtensionNamespaceHandler.NAMESPACE, "SharedToken");
 
     @Override
     protected Class<? extends AbstractDataConnector> getNativeBeanClass() {

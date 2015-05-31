@@ -43,7 +43,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="LineLength">
       <property name="max"
                 value="${com.puppycrawl.tools.checkstyle.checks.sizes.LineLength.max}"
-                default="80"/>
+                default="120"/>
       <property name="severity" value="error"/>
 
       <property name="ignorePattern"

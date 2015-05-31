@@ -1,8 +1,7 @@
 package au.edu.aaf.shibext.sharedtoken;
 
 import net.shibboleth.idp.attribute.resolver.context.AttributeResolutionContext;
-import net.shibboleth.idp.attribute.resolver.context
-        .AttributeResolverWorkContext;
+import net.shibboleth.idp.attribute.resolver.context.AttributeResolverWorkContext;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -17,13 +16,10 @@ public class SharedTokenDataConnectorTest {
 
     @Test
     public void testDoDataConnectorResolve() throws Exception {
-        SharedTokenDataConnector sharedTokenDataConnector = new
-                SharedTokenDataConnector();
-        AttributeResolutionContext resolutionContext = mock
-                (AttributeResolutionContext.class);
-        sharedTokenDataConnector.doDataConnectorResolve(
-                resolutionContext,
-                new AttributeResolverWorkContext());
+        SharedTokenDataConnector sharedTokenDataConnector = new SharedTokenDataConnector();
+        AttributeResolutionContext resolutionContext = mock(AttributeResolutionContext.class);
+
+        sharedTokenDataConnector.doDataConnectorResolve(resolutionContext, new AttributeResolverWorkContext());
 
         assertThat(sharedTokenDataConnector,
                 is(notNullValue()));
