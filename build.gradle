@@ -67,15 +67,17 @@ checkstyle {
     sourceSets = [sourceSets.main, sourceSets.test]
 }
 
-task checkstyleHtml << {
+task checkstyleMainHtml << {
     ant.xslt(in: checkstyleMain.reports.xml.destination,
             style: file('config/checkstyle-noframes-sorted.xsl'),
             out: new File(checkstyleMain.reports.xml.destination.parent, 'main.html'))
+}
+checkstyleMain.finalizedBy checkstyleMainHtml
+
+task checkstyleTestHtml << {
     ant.xslt(in: checkstyleTest.reports.xml.destination,
             style: file('config/checkstyle-noframes-sorted.xsl'),
             out: new File(checkstyleTest.reports.xml.destination.parent, 'test.html'))
 }
-
-checkstyleMain.finalizedBy checkstyleHtml
-checkstyleTest.finalizedBy checkstyleHtml
+checkstyleTest.finalizedBy checkstyleTestHtml
 
