@@ -1,5 +1,6 @@
 package au.edu.aaf.shibext.sharedtoken;
 
+import net.shibboleth.idp.attribute.resolver.ResolutionException;
 import net.shibboleth.idp.attribute.resolver.context.AttributeResolutionContext;
 import net.shibboleth.idp.attribute.resolver.context.AttributeResolverWorkContext;
 import org.junit.Test;
@@ -15,7 +16,7 @@ import static org.mockito.Mockito.mock;
 public class SharedTokenDataConnectorTest {
 
     @Test
-    public void testDoDataConnectorResolve() throws Exception {
+    public void testDoDataConnectorResolve() throws ResolutionException {
         SharedTokenDataConnector sharedTokenDataConnector = new SharedTokenDataConnector();
         AttributeResolutionContext resolutionContext = mock(AttributeResolutionContext.class);
 
