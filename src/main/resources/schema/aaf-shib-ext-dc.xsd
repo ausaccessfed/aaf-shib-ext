@@ -1,0 +1,20 @@
+<schema targetNamespace="urn:mace:aaf.edu.au:shibboleth:2.0:resolver:dc"
+        xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:resolver="urn:mace:shibboleth:2.0:resolver"
+        elementFormDefault="qualified">
+
+  <import namespace="urn:mace:shibboleth:2.0:resolver"
+          schemaLocation="classpath:/schema/shibboleth-2.0-attribute-resolver.xsd"/>
+
+  <complexType name="SharedToken">
+    <complexContent>
+      <extension base="resolver:BaseDataConnectorType">
+        <attribute name="test" type="string">
+        </attribute>
+      </extension>
+    </complexContent>
+
+  </complexType>
+
+</schema>
+
