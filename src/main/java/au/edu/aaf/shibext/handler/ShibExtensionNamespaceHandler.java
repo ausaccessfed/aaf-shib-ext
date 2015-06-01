@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 public class ShibExtensionNamespaceHandler extends BaseSpringNamespaceHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(ShibExtensionNamespaceHandler.class);
-    public static final java.lang.String NAMESPACE = "urn:mace:aaf.edu.au:shibboleth:2.0:resolver:dc";
+    public static final String NAMESPACE = "urn:mace:aaf.edu.au:shibboleth:2.0:resolver:dc";
 
     @Override
     public void init() {
