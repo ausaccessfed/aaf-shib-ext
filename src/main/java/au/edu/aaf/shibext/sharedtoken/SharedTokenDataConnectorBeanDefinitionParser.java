@@ -5,6 +5,7 @@ import net.shibboleth.idp.attribute.resolver.AbstractDataConnector;
 import net.shibboleth.idp.attribute.resolver.spring.dc.AbstractDataConnectorParser;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.ParserContext;
+import org.w3c.dom.Element;
 
 import javax.xml.namespace.QName;
 
@@ -25,7 +26,7 @@ public class SharedTokenDataConnectorBeanDefinitionParser extends
     }
 
     @Override
-    protected void doV2Parse(org.w3c.dom.Element pluginConfig,
+    protected void doV2Parse(Element pluginConfig,
                              ParserContext parserContext,
                              BeanDefinitionBuilder pluginBuilder) {
 

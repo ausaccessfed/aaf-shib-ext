@@ -1,12 +1,8 @@
-plugins {
-    id 'net.saliman.cobertura' version '2.2.7'
-}
-
 apply plugin: 'java'
 apply plugin: 'findbugs'
 apply plugin: 'pmd'
 apply plugin: 'checkstyle'
-apply plugin: 'cobertura'
+apply plugin: 'jacoco'
 
 def shibboleth_idp_version = '3.1.1'
 
@@ -80,3 +76,73 @@ task checkstyleTestHtml << {
 }
 checkstyleTest.finalizedBy checkstyleTestHtml
 
+ext {
+    limits = [
+            'instruction': 85,
+            'branch'     : 85,
+            'line'       : 85,
+            'complexity' : 85,
+            'method'     : 85,
+            'class'      : 85
+    ]
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+
+    doLast {
+        def report = file("${jacoco.reportsDir}/test/jacocoTestReport.xml")
+        logger.lifecycle("Checking coverage results: ${report}")
+
+        def parser = new XmlParser()
+        parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
+        def results = parser.parse(report)
+
+        def percentage = {
+            def covered = it.'@covered' as Double
+            def missed = it.'@missed' as Double
+            ((covered / (covered + missed)) * 100).round(2)
+        }
+
+        def counters = results.counter
+        def metrics = [:]
+        metrics << [
+                'instruction': percentage(counters.find { it.'@type'.equals('INSTRUCTION') }),
+                'branch'     : percentage(counters.find { it.'@type'.equals('BRANCH') }),
+                'line'       : percentage(counters.find { it.'@type'.equals('LINE') }),
+                'complexity' : percentage(counters.find { it.'@type'.equals('COMPLEXITY') }),
+                'method'     : percentage(counters.find { it.'@type'.equals('METHOD') }),
+                'class'      : percentage(counters.find { it.'@type'.equals('CLASS') })
+        ]
+
+        def failures = []
+        def passed = []
+        metrics.each {
+            def limit = limits[it.key]
+            if (it.value < limit) {
+                failures.add("- ${it.key} coverage rate is: ${it.value}%, minimum is ${limit}%")
+            } else {
+                passed.add("- ${it.key} coverage rate is: ${it.value}%, minimum is ${limit}%")
+            }
+        }
+
+        logger.quiet("------------------ Code Coverage -----------------------")
+        if (passed) {
+            passed.each {
+                logger.quiet(it)
+            }
+        }
+        if (failures) {
+            logger.quiet("FAILURES: ")
+            failures.each {
+                logger.quiet(it)
+            }
+            throw new GradleException("Code coverage failed")
+        }
+        logger.quiet("--------------------------------------------------------")
+    }
+}
+check.dependsOn jacocoTestReport
