@@ -18,6 +18,4 @@ Unless specified, the log information will appear in `$IDP_HOME/logs/idp-process
 To build:
 ```$ gradle clean build```
 
-Code coverage:
-```$ gradle clean cobertura```
 
