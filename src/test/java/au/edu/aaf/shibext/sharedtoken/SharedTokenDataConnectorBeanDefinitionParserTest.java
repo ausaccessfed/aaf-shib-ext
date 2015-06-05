@@ -1,12 +1,12 @@
 package au.edu.aaf.shibext.sharedtoken;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.w3c.dom.Element;
+
+import java.nio.charset.Charset;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -16,11 +16,19 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(MockitoJUnitRunner.class)
 public class SharedTokenDataConnectorBeanDefinitionParserTest {
 
-    @InjectMocks
+    private static final String IDP_IDENTIFIER = "https://idp.domain.edu.au/idp/shibboleth";
+    private static final String SOURCE_ATTRIBUTE_ID = "uid";
+    private static final String GENERATED_ATTRIBUTE_ID = "auEduPersonSharedToken";
+    private static final String SALT = "Ez8m1HDSLBxu0JNcPEywmOpy+apq4Niw9kEMmAyWbhJqcfAb";
+
     private SharedTokenDataConnectorBeanDefinitionParser sharedTokenDataConnectorBeanDefinitionParser;
+
+    @Before
+    public void setup() {
+        sharedTokenDataConnectorBeanDefinitionParser = new SharedTokenDataConnectorBeanDefinitionParser();
+    }
 
     @Test
     public void testGetNativeBeanClass() {
@@ -29,38 +37,23 @@ public class SharedTokenDataConnectorBeanDefinitionParserTest {
     }
 
     @Test
-    public void testDoV2ParseWithNoExistingNamespace() {
+    public void ensureThatV2ParseAddsPropertyValuesAsExpected() {
         Element mockPluginConfig = mock(Element.class);
         ParserContext mockParserContext = null;
         BeanDefinitionBuilder mockPluginBuilder = mock(BeanDefinitionBuilder.class);
 
-        sharedTokenDataConnectorBeanDefinitionParser.doV2Parse(
-                mockPluginConfig, mockParserContext, mockPluginBuilder);
-
-        verify(mockPluginBuilder).addPropertyValue("generatedAttributeId", "auEduPersonSharedToken");
-    }
-
-    @Test
-    public void testDoV2ParseWithExistingNamespace() {
-        Element mockPluginConfig = mock(Element.class);
-        ParserContext mockParserContext = null;
-        BeanDefinitionBuilder mockPluginBuilder = mock(BeanDefinitionBuilder.class);
-
-        when(mockPluginConfig.hasAttributeNS(null, "generatedAttributeID")).thenReturn(true);
+        when(mockPluginConfig.getAttributeNS(null, "sourceAttributeId")).thenReturn(SOURCE_ATTRIBUTE_ID);
+        when(mockPluginConfig.getAttributeNS(null, "idpIdentifier")).thenReturn(IDP_IDENTIFIER);
+        when(mockPluginConfig.getAttributeNS(null, "salt")).thenReturn(SALT);
 
         sharedTokenDataConnectorBeanDefinitionParser.doV2Parse(
                 mockPluginConfig, mockParserContext, mockPluginBuilder);
 
-        verify(mockPluginBuilder).addPropertyValue("generatedAttributeId", null);
+        verify(mockPluginBuilder).addPropertyValue("generatedAttributeId", GENERATED_ATTRIBUTE_ID);
+        verify(mockPluginBuilder).addPropertyValue("sourceAttributeId", SOURCE_ATTRIBUTE_ID);
+        verify(mockPluginBuilder).addPropertyValue("idpIdentifier", IDP_IDENTIFIER);
+        verify(mockPluginBuilder).addPropertyValue("salt", SALT.getBytes(Charset.forName("UTF-8")));
     }
 
-    public SharedTokenDataConnectorBeanDefinitionParser getSharedTokenDataConnectorBeanDefinitionParser() {
-        return sharedTokenDataConnectorBeanDefinitionParser;
-    }
-
-    public void setSharedTokenDataConnectorBeanDefinitionParser(SharedTokenDataConnectorBeanDefinitionParser
-                                                                        sharedTokenDataConnectorBeanDefinitionParser) {
-        this.sharedTokenDataConnectorBeanDefinitionParser = sharedTokenDataConnectorBeanDefinitionParser;
-    }
 }
 
