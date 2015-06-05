@@ -7,13 +7,45 @@
           schemaLocation="classpath:/schema/shibboleth-2.0-attribute-resolver.xsd"/>
 
   <complexType name="SharedToken">
+    <annotation>
+      <documentation>
+        Connector that generates or retrieves a auEduPersonSharedToken from a database.
+      </documentation>
+    </annotation>
     <complexContent>
       <extension base="resolver:BaseDataConnectorType">
-        <attribute name="test" type="string">
+        <attribute name="generatedAttributeID" type="string">
+          <annotation>
+            <documentation>
+              The name of the attribute which should be used to as input to the computed ID.
+            </documentation>
+          </annotation>
+        </attribute>
+        <attribute name="sourceAttributeId" type="string" use="required">
+          <annotation>
+            <documentation>
+              Name of the source attribute used for the auEduPersonSharedToken generation. Ideally a unique identifier
+              that never changes.
+            </documentation>
+          </annotation>
+        </attribute>
+        <attribute name="salt" type="string" use="required">
+          <annotation>
+            <documentation>
+              The salt used in auEduPersonSharedToken generation algorithm.
+            </documentation>
+          </annotation>
+        </attribute>
+        <attribute name="idpIdentifier" type="string" use="required">
+          <annotation>
+            <documentation>
+              Typically set as IdP's EntityID — used in auEduPersonSharedToken generation algorithm. Example value:
+              'https://idp.domain.edu.au/idp/shibboleth'
+            </documentation>
+          </annotation>
         </attribute>
       </extension>
     </complexContent>
-
   </complexType>
 
 </schema>
