@@ -80,7 +80,7 @@ public class SharedTokenDataConnectorTest {
         assertThat(result.size(), is(1));
         assertThat(result.containsKey(GENERATED_ATTRIBUTE_ID), is(true));
         assertThat(result.get(GENERATED_ATTRIBUTE_ID).getValues().get(0).getValue(),
-                is("auEduPersonSharedTokenAttribute"));
+                is("rXjBo0Z9gQkCLmz_08IcYCJej6w"));
     }
 
     @Test

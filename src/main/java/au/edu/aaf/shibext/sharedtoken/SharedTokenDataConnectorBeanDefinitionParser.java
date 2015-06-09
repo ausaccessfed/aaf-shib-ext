@@ -10,12 +10,12 @@ import org.springframework.beans.factory.xml.ParserContext;
 import org.w3c.dom.Element;
 
 import javax.xml.namespace.QName;
-import java.nio.charset.Charset;
 
 
 /**
  * Facilitates the loading of values from xml configuration to SharedTokenDataConnector.
  *
+ * @author rianniello
  * @see SharedTokenDataConnector
  */
 public class SharedTokenDataConnectorBeanDefinitionParser extends AbstractDataConnectorParser {
@@ -34,12 +34,8 @@ public class SharedTokenDataConnectorBeanDefinitionParser extends AbstractDataCo
         LOG.trace("Started doV2Parse ...");
         pluginBuilder.addPropertyValue("generatedAttributeId", "auEduPersonSharedToken");
         pluginBuilder.addPropertyValue("sourceAttributeId", getSourceAttributeId(pluginConfig, "sourceAttributeId"));
-        pluginBuilder.addPropertyValue("salt", getUTF8Bytes(getSourceAttributeId(pluginConfig, "salt")));
+        pluginBuilder.addPropertyValue("salt", getSourceAttributeId(pluginConfig, "salt"));
         pluginBuilder.addPropertyValue("idpIdentifier", getSourceAttributeId(pluginConfig, "idpIdentifier"));
-    }
-
-    private byte[] getUTF8Bytes(String saltAsString) {
-        return saltAsString.getBytes(Charset.forName("UTF-8"));
     }
 
     private String getSourceAttributeId(Element pluginConfig, String attributeId) {

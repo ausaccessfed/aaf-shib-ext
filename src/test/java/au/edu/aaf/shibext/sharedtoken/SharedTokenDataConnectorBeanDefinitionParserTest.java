@@ -6,8 +6,6 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.w3c.dom.Element;
 
-import java.nio.charset.Charset;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -52,7 +50,7 @@ public class SharedTokenDataConnectorBeanDefinitionParserTest {
         verify(mockPluginBuilder).addPropertyValue("generatedAttributeId", GENERATED_ATTRIBUTE_ID);
         verify(mockPluginBuilder).addPropertyValue("sourceAttributeId", SOURCE_ATTRIBUTE_ID);
         verify(mockPluginBuilder).addPropertyValue("idpIdentifier", IDP_IDENTIFIER);
-        verify(mockPluginBuilder).addPropertyValue("salt", SALT.getBytes(Charset.forName("UTF-8")));
+        verify(mockPluginBuilder).addPropertyValue("salt", SALT);
     }
 
 }

@@ -19,10 +19,9 @@ import java.util.Map;
 
 /**
  * Retrieves an auEduPersonSharedToken. This value may exist in the database, otherwise a new value is generated.
- * An auEduPersonSharedToken is generated using the algorithm: base64(sha1(sourceAttribute + idpIdentifier + salt)).
  *
  * @author rianniello
- * @see <a href="http://wiki.aaf.edu.au/tech-info/attributes/auedupersonsharedtoken">auedupersonsharedtoken</a>
+ * @see AuEduPersonSharedTokenGenerator
  */
 public class SharedTokenDataConnector extends AbstractDataConnector {
 
@@ -52,6 +51,11 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
     private String salt;
 
     /**
+     * Used for auEduPersonSharedToken generation.
+     */
+    private AuEduPersonSharedTokenGenerator auEduPersonSharedTokenGenerator = new AuEduPersonSharedTokenGenerator();
+
+    /**
      * Resolves the generatedAttributeId (auEduPersonSharedToken) value.
      *
      * @throws net.shibboleth.idp.attribute.resolver.ResolutionException if sourceAttributeId cannot be resolved
@@ -61,7 +65,9 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
                                                                AttributeResolverWorkContext workContext)
             throws ResolutionException {
 
-        LOG.trace("Resolving SharedToken");
+        LOG.debug("Resolving SharedToken");
+        LOG.debug("generatedAttributeId is " + generatedAttributeId);
+        LOG.debug("sourceAttributeId is " + sourceAttributeId);
 
         if (LOG.isDebugEnabled()) {
             logKeyValuePairsForAllAttributes(workContext);
@@ -69,15 +75,14 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
 
         String resolvedSourceIdAttributeString = getResolvedSourceIdAttributeString(workContext);
 
-        LOG.debug("Resolved sourceAttributeId as " + resolvedSourceIdAttributeString);
-        LOG.debug("generatedAttributeId is " + generatedAttributeId);
-        LOG.debug("sourceAttributeId is " + sourceAttributeId);
-        LOG.debug("idpIdentifier is " + idpIdentifier);
-        LOG.debug("salt is " + salt); // TODO remove this
+        LOG.debug("Generating auEduPersonSharedToken. Resolved sourceAttributeId as " +
+                resolvedSourceIdAttributeString + ", idpIdentifier is " + idpIdentifier + ", salt is " + salt);
 
         // TODO generation if not in database, otherwise use db value
-        IdPAttribute auEduPersonSharedTokenAttribute = buildAuEduPersonSharedTokenAttribute
-                ("auEduPersonSharedTokenAttribute"); // TEMP
+        String auEduPersonSharedToken = auEduPersonSharedTokenGenerator.generate(resolvedSourceIdAttributeString,
+                idpIdentifier, salt);
+
+        IdPAttribute auEduPersonSharedTokenAttribute = buildAuEduPersonSharedTokenAttribute(auEduPersonSharedToken);
         Map<String, IdPAttribute> attributes = new LazyMap<>();
         attributes.put(auEduPersonSharedTokenAttribute.getId(), auEduPersonSharedTokenAttribute);
 

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Registers the SharedTokenDataConnectorBeanDefinitionParser.
  *
+ * @author rianniello
  * @see SharedTokenDataConnectorBeanDefinitionParser
  */
 public class ShibExtensionNamespaceHandler extends BaseSpringNamespaceHandler {
