@@ -25,7 +25,7 @@
         <attribute name="salt" type="string" use="required">
           <annotation>
             <documentation>
-              The salt used in auEduPersonSharedToken generation algorithm.
+              The salt used in auEduPersonSharedToken generation algorithm. Must be at least 16 characters.
             </documentation>
           </annotation>
         </attribute>
