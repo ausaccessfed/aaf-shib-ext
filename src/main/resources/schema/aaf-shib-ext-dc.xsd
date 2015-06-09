@@ -14,13 +14,6 @@
     </annotation>
     <complexContent>
       <extension base="resolver:BaseDataConnectorType">
-        <attribute name="generatedAttributeID" type="string">
-          <annotation>
-            <documentation>
-              The name of the attribute which should be used to as input to the computed ID.
-            </documentation>
-          </annotation>
-        </attribute>
         <attribute name="sourceAttributeId" type="string" use="required">
           <annotation>
             <documentation>
