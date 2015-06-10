@@ -31,6 +31,7 @@ public class SharedTokenDataConnectorTest {
     private static final String GENERATED_ATTRIBUTE_ID = "auEduPersonSharedToken";
     private static final String IDP_IDENTIFIER = "https://shib3.aaf.dev.edu.au/idp/shibboleth";
     private static final String SALT = "Ez8m1HDSLBxu0JNcPEywmOpy+apq4Niw9kEMmAyWbhJqcfAb";
+    private static final String UNCHECKED = "unchecked";
     private SharedTokenDataConnector sharedTokenDataConnector;
     private AttributeResolutionContext mockAttributeResolutionContext;
     private AttributeResolverWorkContext mockAttributeResolverWorkContext;
@@ -53,7 +54,7 @@ public class SharedTokenDataConnectorTest {
     public void ensureResolvesAuEduPersonSharedToken() throws ResolutionException {
         final String uniqueUserIdentifier = "12345679";
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings(UNCHECKED)
         Map<String, ResolvedAttributeDefinition> mockedAttributeMap = mock(Map.class);
 
         AttributeDefinition mockedAttributeDefinition = mock(AttributeDefinition.class);
@@ -86,7 +87,7 @@ public class SharedTokenDataConnectorTest {
 
     @Test
     public void ensureThatResolutionExceptionIsThrownIfSourceIdentifierCannotBeResolved() {
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings(UNCHECKED)
         Map<String, ResolvedAttributeDefinition> mockedAttributeMap = mock(Map.class);
 
         AttributeDefinition mockedAttributeDefinition = mock(AttributeDefinition.class);
@@ -106,7 +107,7 @@ public class SharedTokenDataConnectorTest {
             sharedTokenDataConnector.doDataConnectorResolve(mockAttributeResolutionContext,
                     mockAttributeResolverWorkContext);
         } catch (ResolutionException e) {
-            assertThat(e.getMessage(), is("Value 'uid' could not be resolved for 'auEduPersonSharedToken' generation"));
+            assertThat(e.getMessage(), is("Value 'uid' could not be resolved"));
             return;
         }
         fail("Expected ResolutionException");
@@ -116,7 +117,7 @@ public class SharedTokenDataConnectorTest {
     @Test
     public void ensureResolutionExceptionIsThrownIfSourceAttributeDoesNotResolveAsString() {
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings(UNCHECKED)
         Map<String, ResolvedAttributeDefinition> mockedAttributeMap = mock(Map.class);
 
         AttributeDefinition mockedAttributeDefinition = mock(AttributeDefinition.class);
@@ -142,6 +143,25 @@ public class SharedTokenDataConnectorTest {
                     mockAttributeResolverWorkContext);
         } catch (ResolutionException e) {
             assertThat(e.getMessage(), is("Value 'uid' must resolve to a String"));
+            return;
+        }
+        fail("Expected ResolutionException");
+    }
+
+    @Test
+    public void ensureResolutionExceptionIsThrownIfSourceAttributeIsNull() {
+
+        @SuppressWarnings(UNCHECKED)
+        Map<String, ResolvedAttributeDefinition> mockedAttributeMap = mock(Map.class);
+
+        when(mockAttributeResolverWorkContext.getResolvedIdPAttributeDefinitions()).thenReturn(mockedAttributeMap);
+        when(mockedAttributeMap.get(SOURCE_ATTRIBUTE_ID)).thenReturn(null);
+
+        try {
+            sharedTokenDataConnector.doDataConnectorResolve(mockAttributeResolutionContext,
+                    mockAttributeResolverWorkContext);
+        } catch (ResolutionException e) {
+            assertThat(e.getMessage(), is("Value 'uid' could not be resolved"));
             return;
         }
         fail("Expected ResolutionException");

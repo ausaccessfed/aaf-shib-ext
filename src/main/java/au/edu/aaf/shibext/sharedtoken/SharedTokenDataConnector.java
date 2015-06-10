@@ -91,27 +91,31 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
             ResolutionException {
         LOG.debug("Getting sourceAttributeId '" + sourceAttributeId + "' from resolvedAttributes");
         Map<String, ResolvedAttributeDefinition> resolvedAttributes = workContext.getResolvedIdPAttributeDefinitions();
+        if (resolvedAttributes.get(sourceAttributeId) == null) {
+            throwResolutionException("Value '" + sourceAttributeId + "' could not be resolved");
+        }
+
         IdPAttribute resolvedAttribute = resolvedAttributes.get(sourceAttributeId).getResolvedAttribute();
         List<IdPAttributeValue<?>> values = resolvedAttribute.getValues();
 
         if (values == null || values.size() != 1) {
-            String message = "Value '" + sourceAttributeId + "' could not be resolved for '" + generatedAttributeId +
-                    "' generation";
-            LOG.error(message);
-            throw new ResolutionException(message);
+            throwResolutionException("Value '" + sourceAttributeId + "' could not be resolved");
         }
 
         Object resolvedSourceAttributeObject = values.get(0);
         if (!StringAttributeValue.class.equals(resolvedSourceAttributeObject.getClass())) {
-            String message = "Value '" + sourceAttributeId + "' must resolve to a String";
-            LOG.error(message);
-            throw new ResolutionException(message);
+            throwResolutionException("Value '" + sourceAttributeId + "' must resolve to a String");
         }
 
         String resolvedSourceAttribute = ((StringAttributeValue) resolvedSourceAttributeObject).getValue();
         LOG.debug("Resolved as " + resolvedSourceAttribute);
         return resolvedSourceAttribute;
 
+    }
+
+    private void throwResolutionException(String message) throws ResolutionException {
+        LOG.error(message);
+        throw new ResolutionException(message);
     }
 
     /**
