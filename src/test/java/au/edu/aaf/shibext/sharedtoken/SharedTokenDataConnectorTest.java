@@ -1,5 +1,6 @@
 package au.edu.aaf.shibext.sharedtoken;
 
+import net.shibboleth.idp.attribute.ByteAttributeValue;
 import net.shibboleth.idp.attribute.IdPAttribute;
 import net.shibboleth.idp.attribute.IdPAttributeValue;
 import net.shibboleth.idp.attribute.StringAttributeValue;
@@ -110,6 +111,40 @@ public class SharedTokenDataConnectorTest {
         }
         fail("Expected ResolutionException");
 
+    }
+
+    @Test
+    public void ensureResolutionExceptionIsThrownIfSourceAttributeDoesNotResolveAsString() {
+
+        @SuppressWarnings("unchecked")
+        Map<String, ResolvedAttributeDefinition> mockedAttributeMap = mock(Map.class);
+
+        AttributeDefinition mockedAttributeDefinition = mock(AttributeDefinition.class);
+        IdPAttribute mockedIdPAttribute = mock(IdPAttribute.class);
+        when(mockedAttributeDefinition.isInitialized()).thenReturn(true);
+        when(mockedAttributeDefinition.isDestroyed()).thenReturn(false);
+        ResolvedAttributeDefinition resolvedAttributeDefinition = new ResolvedAttributeDefinition(
+                mockedAttributeDefinition, mockedIdPAttribute);
+
+        Set<Map.Entry<String, ResolvedAttributeDefinition>> entrySet = new HashSet<>();
+        entrySet.add(new AbstractMap.SimpleEntry<>(SOURCE_ATTRIBUTE_ID, resolvedAttributeDefinition));
+
+        List<IdPAttributeValue<?>> idPAttributeValues = new ArrayList<>();
+        idPAttributeValues.add(new ByteAttributeValue(new byte[1]));
+
+        when(mockAttributeResolverWorkContext.getResolvedIdPAttributeDefinitions()).thenReturn(mockedAttributeMap);
+        when(mockedAttributeMap.entrySet()).thenReturn(entrySet);
+        when(mockedAttributeMap.get(SOURCE_ATTRIBUTE_ID)).thenReturn(resolvedAttributeDefinition);
+        when(mockedIdPAttribute.getValues()).thenReturn(idPAttributeValues);
+
+        try {
+            sharedTokenDataConnector.doDataConnectorResolve(mockAttributeResolutionContext,
+                    mockAttributeResolverWorkContext);
+        } catch (ResolutionException e) {
+            assertThat(e.getMessage(), is("Value 'uid' must resolve to a String"));
+            return;
+        }
+        fail("Expected ResolutionException");
     }
 }
 

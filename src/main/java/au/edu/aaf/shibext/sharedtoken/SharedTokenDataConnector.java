@@ -100,9 +100,18 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
             LOG.error(message);
             throw new ResolutionException(message);
         }
-        String resolvedSourceAttribute = values.get(0).getValue().toString();
+
+        Object resolvedSourceAttributeObject = values.get(0);
+        if (!StringAttributeValue.class.equals(resolvedSourceAttributeObject.getClass())) {
+            String message = "Value '" + sourceAttributeId + "' must resolve to a String";
+            LOG.error(message);
+            throw new ResolutionException(message);
+        }
+
+        String resolvedSourceAttribute = ((StringAttributeValue) resolvedSourceAttributeObject).getValue();
         LOG.debug("Resolved as " + resolvedSourceAttribute);
         return resolvedSourceAttribute;
+
     }
 
     /**
