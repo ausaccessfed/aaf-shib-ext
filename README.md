@@ -4,7 +4,7 @@ Shibboleth extension for generating auEduPersonSharedToken.
 
 # Deployment
 
-## 1. Configuration
+## 1. Configure resolvers
 
 in `$IDP_HOME/conf/attribute-resolver.xml`:
 
@@ -27,14 +27,14 @@ Attributes (all mandatory):
 
 - id: the unique identifier for the data connector.
 - sourceAttributeID: used for computing the sharedToken — ideally a unique identifier that never changes.
-- salt: used when computing sharedToken — random data, must be at least 16 characters. N.B. Once set, 
+- salt: a string of random data, used when computing sharedToken. Must be at least 16 characters. N.B. Once set, 
 this value **must never change**. Please keep a copy of this value. This value can be generated with openssl:
                                                       
 ```
 openssl rand -base64 36 2>/dev/null
 ```
 
-## 2. Logging
+## 2. Configure logging
 
 Use the pattern: `"au.edu.aaf.shibext"` in your logging configuration to enable logging.
 
@@ -46,7 +46,7 @@ Unless specified, the log information will appear in `$IDP_HOME/logs/idp-process
 
 ## 3. Installing the library
 
-1. Copy the library to `/opt/shibboleth-idp/edit-webapp/WEB-INF/lib/`
+1. Copy the jar file to `$IDP_HOME/edit-webapp/WEB-INF/lib/`
 2. Re-run the installer `sh $IDP_HOME/bin/build.sh`
 3. Restart the app server
 
