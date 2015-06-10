@@ -1,9 +1,40 @@
 # AAF Shibboleth Extensions
 
-Shibboleth extension for shared token and targeted id.
+Shibboleth extension for generating auEduPersonSharedToken.
 
 # Deployment
-## Logging
+
+## 1. Configuration
+
+in `$IDP_HOME/conf/attribute-resolver.xml`:
+
+Import the definition
+```
+xsi:schemaLocation="...
+                    urn:mace:aaf.edu.au:shibboleth:2.0:resolver:dc classpath:/schema/aaf-shib-ext-dc.xsd
+```
+
+Define the `DataConnector`
+```
+<resolver:DataConnector xsi:type="SharedToken" xmlns="urn:mace:aaf.edu.au:shibboleth:2.0:resolver:dc"
+                    id="sharedToken"
+                    salt="Ez8m1HDSLBxu0JNcPEywmOpy+apq4Niw9kEMmAyWbhJqcfAb">
+                    <resolver:Dependency ref="..." />
+</resolver:DataConnector>
+``` 
+
+Attributes (all mandatory):
+
+- id: the unique identifier for the data connector.
+- sourceAttributeID: used for computing the sharedToken — ideally a unique identifier that never changes.
+- salt: used when computing sharedToken — random data, must be at least 16 characters. N.B. Once set, 
+this value **must never change**. Please keep a copy of this value. This value can be generated with openssl:
+                                                      
+```
+openssl rand -base64 36 2>/dev/null
+```
+
+## 2. Logging
 
 Use the pattern: `"au.edu.aaf.shibext"` in your logging configuration to enable logging.
 
@@ -13,25 +44,9 @@ For example, Shibboleth's `$IDP_HOME/conf/logback.xml` can use the configuration
 ```
 Unless specified, the log information will appear in `$IDP_HOME/logs/idp-process.log`.
 
-# Configuration
+## 3. Installing the library
 
-in `$IDP_HOME/conf/attribute-resolver.xml`:
-```
-<resolver:DataConnector xsi:type="SharedToken" xmlns="urn:mace:aaf.edu.au:shibboleth:2.0:resolver:dc"
-                    id="sharedToken"
-                    sourceAttributeId="commonName"
-                    idpIdentifier="https://shib3.aaf.dev.edu.au/idp/shibboleth"
-                    salt="Ez8m1HDSLBxu0JNcPEywmOpy+apq4Niw9kEMmAyWbhJqcfAb">
-                    <resolver:Dependency ref="myLDAP" />
-</resolver:DataConnector>
-
-
-```
-N.B. The fields `sourceAttributeID`, `idpIdentifier` and `salt` are mandatory.
-
-# Developer notes
-## Building
-To build:
-```$ gradle clean build```
-
+1. Copy the library to `/opt/shibboleth-idp/edit-webapp/WEB-INF/lib/`
+2. Re-run the installer `sh $IDP_HOME/bin/build.sh`
+3. Restart the app server
 
