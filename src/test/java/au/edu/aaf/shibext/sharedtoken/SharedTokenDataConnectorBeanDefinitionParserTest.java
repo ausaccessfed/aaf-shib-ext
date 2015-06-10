@@ -16,7 +16,6 @@ import static org.mockito.Mockito.when;
 
 public class SharedTokenDataConnectorBeanDefinitionParserTest {
 
-    private static final String IDP_IDENTIFIER = "https://idp.domain.edu.au/idp/shibboleth";
     private static final String SOURCE_ATTRIBUTE_ID = "uid";
     private static final String GENERATED_ATTRIBUTE_ID = "auEduPersonSharedToken";
     private static final String SALT = "Ez8m1HDSLBxu0JNcPEywmOpy+apq4Niw9kEMmAyWbhJqcfAb";
@@ -41,7 +40,6 @@ public class SharedTokenDataConnectorBeanDefinitionParserTest {
         BeanDefinitionBuilder mockPluginBuilder = mock(BeanDefinitionBuilder.class);
 
         when(mockPluginConfig.getAttributeNS(null, "sourceAttributeId")).thenReturn(SOURCE_ATTRIBUTE_ID);
-        when(mockPluginConfig.getAttributeNS(null, "idpIdentifier")).thenReturn(IDP_IDENTIFIER);
         when(mockPluginConfig.getAttributeNS(null, "salt")).thenReturn(SALT);
 
         sharedTokenDataConnectorBeanDefinitionParser.doV2Parse(
@@ -49,7 +47,6 @@ public class SharedTokenDataConnectorBeanDefinitionParserTest {
 
         verify(mockPluginBuilder).addPropertyValue("generatedAttributeId", GENERATED_ATTRIBUTE_ID);
         verify(mockPluginBuilder).addPropertyValue("sourceAttributeId", SOURCE_ATTRIBUTE_ID);
-        verify(mockPluginBuilder).addPropertyValue("idpIdentifier", IDP_IDENTIFIER);
         verify(mockPluginBuilder).addPropertyValue("salt", SALT);
     }
 

@@ -38,7 +38,6 @@ public class SharedTokenDataConnectorTest {
     public void setupSharedTokenDataConnector() {
         sharedTokenDataConnector = new SharedTokenDataConnector();
         sharedTokenDataConnector.setGeneratedAttributeId(GENERATED_ATTRIBUTE_ID);
-        sharedTokenDataConnector.setIdpIdentifier(IDP_IDENTIFIER);
         sharedTokenDataConnector.setSourceAttributeId(SOURCE_ATTRIBUTE_ID);
         sharedTokenDataConnector.setSalt(SALT);
     }
@@ -73,6 +72,7 @@ public class SharedTokenDataConnectorTest {
         when(mockedAttributeMap.entrySet()).thenReturn(entrySet);
         when(mockedAttributeMap.get(SOURCE_ATTRIBUTE_ID)).thenReturn(resolvedAttributeDefinition);
         when(mockedIdPAttribute.getValues()).thenReturn(idPAttributeValues);
+        when(mockAttributeResolutionContext.getAttributeIssuerID()).thenReturn(IDP_IDENTIFIER);
 
         Map<String, IdPAttribute> result = sharedTokenDataConnector.doDataConnectorResolve
                 (mockAttributeResolutionContext, mockAttributeResolverWorkContext);

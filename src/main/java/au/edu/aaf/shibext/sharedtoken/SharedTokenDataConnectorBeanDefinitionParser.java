@@ -35,7 +35,6 @@ public class SharedTokenDataConnectorBeanDefinitionParser extends AbstractDataCo
         pluginBuilder.addPropertyValue("generatedAttributeId", "auEduPersonSharedToken");
         pluginBuilder.addPropertyValue("sourceAttributeId", getSourceAttributeId(pluginConfig, "sourceAttributeId"));
         pluginBuilder.addPropertyValue("salt", getSourceAttributeId(pluginConfig, "salt"));
-        pluginBuilder.addPropertyValue("idpIdentifier", getSourceAttributeId(pluginConfig, "idpIdentifier"));
     }
 
     private String getSourceAttributeId(Element pluginConfig, String attributeId) {

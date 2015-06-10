@@ -29,14 +29,6 @@
             </documentation>
           </annotation>
         </attribute>
-        <attribute name="idpIdentifier" type="string" use="required">
-          <annotation>
-            <documentation>
-              Typically set as IdP's EntityID — used in auEduPersonSharedToken generation algorithm. Example value:
-              'https://idp.domain.edu.au/idp/shibboleth'
-            </documentation>
-          </annotation>
-        </attribute>
       </extension>
     </complexContent>
   </complexType>
