@@ -33,11 +33,11 @@ public class SharedTokenDataConnectorBeanDefinitionParser extends AbstractDataCo
     protected void doV2Parse(Element pluginConfig, ParserContext parserContext, BeanDefinitionBuilder pluginBuilder) {
         LOG.trace("Started doV2Parse ...");
         pluginBuilder.addPropertyValue("generatedAttributeId", "auEduPersonSharedToken");
-        pluginBuilder.addPropertyValue("sourceAttributeId", getSourceAttributeId(pluginConfig, "sourceAttributeId"));
-        pluginBuilder.addPropertyValue("salt", getSourceAttributeId(pluginConfig, "salt"));
+        pluginBuilder.addPropertyValue("sourceAttributeId", getAttribute(pluginConfig, "sourceAttributeId"));
+        pluginBuilder.addPropertyValue("salt", getAttribute(pluginConfig, "salt"));
     }
 
-    private String getSourceAttributeId(Element pluginConfig, String attributeId) {
+    private String getAttribute(Element pluginConfig, String attributeId) {
         return pluginConfig.getAttributeNS(null, attributeId);
     }
 }
