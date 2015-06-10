@@ -18,6 +18,7 @@ Define the `DataConnector`
 ```
 <resolver:DataConnector xsi:type="SharedToken" xmlns="urn:mace:aaf.edu.au:shibboleth:2.0:resolver:dc"
                     id="sharedToken"
+                    sourceAttributeId="uniqueIdentifier"
                     salt="Ez8m1HDSLBxu0JNcPEywmOpy+apq4Niw9kEMmAyWbhJqcfAb">
                     <resolver:Dependency ref="..." />
 </resolver:DataConnector>
