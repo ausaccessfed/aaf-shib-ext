@@ -62,10 +62,6 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
         LOG.debug("generatedAttributeId is " + generatedAttributeId);
         LOG.debug("sourceAttributeId is " + sourceAttributeId);
 
-        if (LOG.isDebugEnabled()) {
-            logKeyValuePairsForAllAttributes(workContext);
-        }
-
         String resolvedSourceIdAttributeString = getResolvedSourceIdAttributeString(workContext);
         String idpIdentifier = resolutionContext.getAttributeIssuerID();
 
@@ -107,15 +103,6 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
         String resolvedSourceAttribute = values.get(0).getValue().toString();
         LOG.debug("Resolved as " + resolvedSourceAttribute);
         return resolvedSourceAttribute;
-    }
-
-    private void logKeyValuePairsForAllAttributes(AttributeResolverWorkContext workContext) {
-        LOG.debug("Resolved attribute map:");
-        Map<String, ResolvedAttributeDefinition> resolvedAttributes = workContext.getResolvedIdPAttributeDefinitions();
-        for (Map.Entry<String, ResolvedAttributeDefinition> entry : resolvedAttributes.entrySet()) {
-            List<IdPAttributeValue<?>> values = entry.getValue().getResolvedAttribute().getValues();
-            LOG.debug(entry.getKey() + " = " + values.toString());
-        }
     }
 
     /**
