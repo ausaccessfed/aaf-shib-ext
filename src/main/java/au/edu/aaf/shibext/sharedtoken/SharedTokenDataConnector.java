@@ -62,14 +62,14 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
         LOG.debug("generatedAttributeId is " + generatedAttributeId);
         LOG.debug("sourceAttributeId is " + sourceAttributeId);
 
-        String resolvedSourceIdAttributeString = getSourceIdAttributeString(workContext);
+        String resolvedSourceIdAttribute = getSourceAttributeValue(workContext);
         String idpIdentifier = resolutionContext.getAttributeIssuerID();
 
         LOG.debug("Generating auEduPersonSharedToken. Resolved sourceAttributeId as {}"
-                 + ", idpIdentifier is {}, salt is {}", resolvedSourceIdAttributeString, idpIdentifier, salt);
+                 + ", idpIdentifier is {}, salt is {}", resolvedSourceIdAttribute, idpIdentifier, salt);
 
         // TODO generation if not in database, otherwise use db value
-        String auEduPersonSharedToken = auEduPersonSharedTokenGenerator.generate(resolvedSourceIdAttributeString,
+        String auEduPersonSharedToken = auEduPersonSharedTokenGenerator.generate(resolvedSourceIdAttribute,
                 idpIdentifier, salt);
 
         IdPAttribute auEduPersonSharedTokenAttribute = buildAuEduPersonSharedTokenAttribute(auEduPersonSharedToken);
@@ -87,7 +87,7 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
         return attribute;
     }
 
-    private String getSourceIdAttributeString(AttributeResolverWorkContext workContext) throws
+    private String getSourceAttributeValue(AttributeResolverWorkContext workContext) throws
             ResolutionException {
         LOG.debug("Getting sourceAttributeId '" + sourceAttributeId + "' from resolvedAttributes");
         Map<String, ResolvedAttributeDefinition> resolvedAttributes = workContext.getResolvedIdPAttributeDefinitions();
