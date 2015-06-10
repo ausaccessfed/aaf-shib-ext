@@ -34,8 +34,8 @@ public class AuEduPersonSharedTokenGenerator {
      */
     public String generate(String resolvedSourceAttribute, String idPIdentifier, String salt) {
 
-        LOG.debug("Generating auEduPersonSharedToken with resolvedSourceAttribute: " + resolvedSourceAttribute +
-                ", idPIdentifier: " + idPIdentifier + ", salt: " + salt);
+        LOG.debug("Generating auEduPersonSharedToken with resolvedSourceAttribute: {}" +
+                ", idPIdentifier: {}, salt: {}", resolvedSourceAttribute, idPIdentifier, salt);
 
         verifyArgumentIsNotBlankOrNull(resolvedSourceAttribute, "resolvedSourceAttribute");
         verifyArgumentIsNotBlankOrNull(idPIdentifier, "idPIdentifier");

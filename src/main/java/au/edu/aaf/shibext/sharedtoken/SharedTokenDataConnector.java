@@ -65,8 +65,8 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
         String resolvedSourceIdAttributeString = getSourceIdAttributeString(workContext);
         String idpIdentifier = resolutionContext.getAttributeIssuerID();
 
-        LOG.debug("Generating auEduPersonSharedToken. Resolved sourceAttributeId as " +
-                resolvedSourceIdAttributeString + ", idpIdentifier is " + idpIdentifier + ", salt is " + salt);
+        LOG.debug("Generating auEduPersonSharedToken. Resolved sourceAttributeId as {}"
+                 + ", idpIdentifier is {}, salt is {}", resolvedSourceIdAttributeString, idpIdentifier, salt);
 
         // TODO generation if not in database, otherwise use db value
         String auEduPersonSharedToken = auEduPersonSharedTokenGenerator.generate(resolvedSourceIdAttributeString,
