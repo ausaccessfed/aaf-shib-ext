@@ -78,7 +78,7 @@ checkstyleTest.finalizedBy checkstyleTestHtml
 ext {
     limits = [
             'instruction': 85,
-            'branch'     : 83,
+            'branch'     : 85,
             'line'       : 85,
             'complexity' : 85,
             'method'     : 85,
