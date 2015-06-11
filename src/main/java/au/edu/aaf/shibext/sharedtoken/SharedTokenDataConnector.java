@@ -120,6 +120,7 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
 
     /**
      * {@link SharedTokenDataConnector#generatedAttributeId}.
+     * @param generatedAttributeId {@link SharedTokenDataConnector#generatedAttributeId}.
      */
     public void setGeneratedAttributeId(String generatedAttributeId) {
         this.generatedAttributeId = generatedAttributeId;
@@ -127,6 +128,7 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
 
     /**
      * {@link SharedTokenDataConnector#sourceAttributeId}.
+     * @param sourceAttributeId {@link SharedTokenDataConnector#sourceAttributeId}.
      */
     public void setSourceAttributeId(String sourceAttributeId) {
         this.sourceAttributeId = sourceAttributeId;
@@ -134,6 +136,7 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
 
     /**
      * {@link SharedTokenDataConnector#salt}.
+     * @param salt {@link SharedTokenDataConnector#salt}.
      */
     public void setSalt(String salt) {
         this.salt = salt;

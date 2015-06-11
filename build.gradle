@@ -149,3 +149,4 @@ jacocoTestReport {
     }
 }
 check.dependsOn jacocoTestReport
+check.dependsOn javadoc

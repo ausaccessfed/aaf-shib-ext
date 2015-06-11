@@ -10,8 +10,11 @@ import static org.apache.commons.codec.binary.Base64.encodeBase64URLSafe;
 import static org.apache.commons.codec.digest.DigestUtils.sha1;
 
 /**
- * An auEduPersonSharedToken is generated using the algorithm: base64(sha1(resolvedSourceAttribute + idpIdentifier +
- * salt)).
+ * Generates new auEduPersonSharedToken values.
+ *
+ * The following algorithm is used:
+ *
+ * <pre>base64(sha1(resolvedSourceAttribute + idpIdentifier + salt))</pre>
  *
  * @author rianniello
  * @see <a href="http://wiki.aaf.edu.au/tech-info/attributes/auedupersonsharedtoken">auedupersonsharedtoken</a>
@@ -24,7 +27,7 @@ public class AuEduPersonSharedTokenGenerator {
     /**
      * Generates auEduPersonSharedToken using parameters resolvedSourceAttribute, idPIdentifier and salt.
      *
-     * @param resolvedSourceAttribute The resolved source attribute — ideally a unique identifier that never
+     * @param resolvedSourceAttribute The resolved source attribute - ideally a unique identifier that never
      *                                changes.
      * @param idPIdentifier           Typically set as IdP's EntityID. Example value: 'https://idp.domain.edu
      *                                .au/idp/shibboleth'
