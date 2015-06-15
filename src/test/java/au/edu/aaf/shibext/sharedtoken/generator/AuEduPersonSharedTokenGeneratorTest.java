@@ -1,6 +1,5 @@
 package au.edu.aaf.shibext.sharedtoken.generator;
 
-import au.edu.aaf.shibext.sharedtoken.generator.AuEduPersonSharedTokenGenerator;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Rule;

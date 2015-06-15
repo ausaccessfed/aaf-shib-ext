@@ -1,6 +1,7 @@
 package au.edu.aaf.shibext.sharedtoken.dataconnector;
 
 import au.edu.aaf.shibext.handler.ShibExtensionNamespaceHandler;
+import au.edu.aaf.shibext.sharedtoken.datasource.DataSourceResolver;
 import net.shibboleth.idp.attribute.resolver.AbstractDataConnector;
 import net.shibboleth.idp.attribute.resolver.spring.dc.AbstractDataConnectorParser;
 import org.slf4j.Logger;
@@ -24,6 +25,11 @@ public class SharedTokenDataConnectorBeanDefinitionParser extends AbstractDataCo
 
     private static final Logger LOG = LoggerFactory.getLogger(ShibExtensionNamespaceHandler.class);
 
+    /**
+     * Used for resolution of a javax.sql.DataSource.
+     */
+    private DataSourceResolver dataSourceResolver = new DataSourceResolver();
+
     @Override
     protected Class<? extends AbstractDataConnector> getNativeBeanClass() {
         return SharedTokenDataConnector.class;
@@ -35,7 +41,8 @@ public class SharedTokenDataConnectorBeanDefinitionParser extends AbstractDataCo
         pluginBuilder.addPropertyValue("generatedAttributeId", "auEduPersonSharedToken");
         pluginBuilder.addPropertyValue("sourceAttributeId", getAttribute(pluginConfig, "sourceAttributeId"));
         pluginBuilder.addPropertyValue("salt", getAttribute(pluginConfig, "salt"));
-        pluginBuilder.addPropertyValue("dataSource", getAttribute(pluginConfig, "dataSource"));
+        String dataSourceIdentifier = getAttribute(pluginConfig, "dataSource");
+        pluginBuilder.addPropertyValue("dataSource", dataSourceResolver.lookup(dataSourceIdentifier));
     }
 
     private String getAttribute(Element pluginConfig, String attributeId) {

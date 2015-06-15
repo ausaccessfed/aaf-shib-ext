@@ -26,6 +26,8 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:2.0.5-beta"
+    testCompile 'org.springframework:spring-test:4.1.6.RELEASE'
+    testCompile 'com.h2database:h2:1.4.187'
 }
 
 findbugs {

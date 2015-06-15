@@ -1,6 +1,6 @@
 package au.edu.aaf.shibext.sharedtoken.dataconnector;
 
-import au.edu.aaf.shibext.sharedtoken.dataconnector.SharedTokenDataConnector;
+import au.edu.aaf.shibext.config.EmbeddedDataSourceConfig;
 import net.shibboleth.idp.attribute.ByteAttributeValue;
 import net.shibboleth.idp.attribute.IdPAttribute;
 import net.shibboleth.idp.attribute.IdPAttributeValue;
@@ -12,6 +12,12 @@ import net.shibboleth.idp.attribute.resolver.context.AttributeResolutionContext;
 import net.shibboleth.idp.attribute.resolver.context.AttributeResolverWorkContext;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -26,6 +32,8 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = EmbeddedDataSourceConfig.class, loader = AnnotationConfigContextLoader.class)
 public class SharedTokenDataConnectorTest {
 
     private static final String SOURCE_ATTRIBUTE_ID = "uid";
@@ -37,12 +45,16 @@ public class SharedTokenDataConnectorTest {
     private AttributeResolutionContext mockAttributeResolutionContext;
     private AttributeResolverWorkContext mockAttributeResolverWorkContext;
 
+    @Autowired
+    private EmbeddedDatabase dataSource;
+
     @Before
     public void setupSharedTokenDataConnector() {
         sharedTokenDataConnector = new SharedTokenDataConnector();
         sharedTokenDataConnector.setGeneratedAttributeId(GENERATED_ATTRIBUTE_ID);
         sharedTokenDataConnector.setSourceAttributeId(SOURCE_ATTRIBUTE_ID);
         sharedTokenDataConnector.setSalt(SALT);
+        sharedTokenDataConnector.setDataSource(dataSource);
     }
 
     @Before

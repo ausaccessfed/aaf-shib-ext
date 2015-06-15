@@ -15,7 +15,7 @@ import net.shibboleth.utilities.java.support.collection.LazyMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -53,6 +53,9 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
      */
     private AuEduPersonSharedTokenGenerator auEduPersonSharedTokenGenerator = new AuEduPersonSharedTokenGenerator();
 
+    /**
+     * Used to retrieve and store SharedToken values.
+     */
     private SharedTokenDAO sharedTokenDAO;
 
     /**
@@ -76,6 +79,8 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
                 + ", idpIdentifier is {}, salt is {}", resolvedSourceIdAttribute, idpIdentifier, salt);
 
         // TODO generation if not in database, otherwise use db value
+        sharedTokenDAO.getSharedToken("rianniello"); // TEMP
+
         String auEduPersonSharedToken = auEduPersonSharedTokenGenerator.generate(resolvedSourceIdAttribute,
                 idpIdentifier, salt);
 
@@ -152,7 +157,13 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
         this.salt = salt;
     }
 
-    public void setDataSource(String dataSource) throws NamingException {
+    /**
+     * Builds sharedTokenDAO using dataSource.
+     *
+     * @param dataSource The JNDI/container managed DataSource.
+     */
+    public void setDataSource(DataSource dataSource) {
         this.sharedTokenDAO = new JDBCSharedTokenDAO(dataSource);
     }
+
 }
