@@ -1,5 +1,6 @@
-package au.edu.aaf.shibext.sharedtoken;
+package au.edu.aaf.shibext.sharedtoken.dataconnector;
 
+import au.edu.aaf.shibext.sharedtoken.dataconnector.SharedTokenDataConnector;
 import net.shibboleth.idp.attribute.ByteAttributeValue;
 import net.shibboleth.idp.attribute.IdPAttribute;
 import net.shibboleth.idp.attribute.IdPAttributeValue;

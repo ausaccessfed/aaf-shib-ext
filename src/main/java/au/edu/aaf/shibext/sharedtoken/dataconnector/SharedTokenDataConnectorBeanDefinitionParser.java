@@ -1,4 +1,4 @@
-package au.edu.aaf.shibext.sharedtoken;
+package au.edu.aaf.shibext.sharedtoken.dataconnector;
 
 import au.edu.aaf.shibext.handler.ShibExtensionNamespaceHandler;
 import net.shibboleth.idp.attribute.resolver.AbstractDataConnector;
@@ -35,6 +35,7 @@ public class SharedTokenDataConnectorBeanDefinitionParser extends AbstractDataCo
         pluginBuilder.addPropertyValue("generatedAttributeId", "auEduPersonSharedToken");
         pluginBuilder.addPropertyValue("sourceAttributeId", getAttribute(pluginConfig, "sourceAttributeId"));
         pluginBuilder.addPropertyValue("salt", getAttribute(pluginConfig, "salt"));
+        pluginBuilder.addPropertyValue("dataSource", getAttribute(pluginConfig, "dataSource"));
     }
 
     private String getAttribute(Element pluginConfig, String attributeId) {
