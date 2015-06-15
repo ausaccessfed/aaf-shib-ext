@@ -19,21 +19,26 @@ Define the `DataConnector`
 <resolver:DataConnector xsi:type="SharedToken" xmlns="urn:mace:aaf.edu.au:shibboleth:2.0:resolver:dc"
                     id="sharedToken"
                     sourceAttributeId="uniqueIdentifier"
-                    salt="Ez8m1HDSLBxu0JNcPEywmOpy+apq4Niw9kEMmAyWbhJqcfAb">
+                    salt="Ez8m1HDSLBxu0JNcPEywmOpy+apq4Niw9kEMmAyWbhJqcfAb"
+                    dataSource="jdbc/DS_idp_admin">
                     <resolver:Dependency ref="..." />
 </resolver:DataConnector>
 ``` 
 
 Attributes (all mandatory):
 
-- id: the unique identifier for the data connector.
-- sourceAttributeID: used for computing the sharedToken — ideally a unique identifier that never changes.
-- salt: a string of random data, used when computing sharedToken. Must be at least 16 characters. N.B. Once set, 
-this value **must never change**. Please keep a copy of this value. This value can be generated with openssl:
-                                                      
-```
-openssl rand -base64 36 2>/dev/null
-```
+- `id`: the unique identifier for the data connector.
+- `sourceAttributeID`: used for computing the sharedToken — ideally a unique identifier that never changes.
+- `salt`: a string of random data, used when computing sharedToken. Must be at least 16 characters. N.B. Once set, 
+this value **must never change**. Please keep a copy of this value. This value can be generated with the openssl 
+command: 
+`openssl rand -base64 36 2>/dev/null`
+- `dataSource`: the container managed datasource identifier. Please see the relevant application server's instructions 
+for installing a JNDI Datasource. Also ensure the specified JDBC drivers on the classpath of your application server.
+ For example, to configure a MySQL JNDI Datasource for Jetty:
+    1. Place [mysql-connector-java-5.1.35-bin.jar](http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.35.tar.gz) in `/opt/jetty/lib/ext/`
+    2. Configure a [JNDI Datasource](https://wiki.eclipse.org/Jetty/Howto/Configure_JNDI_Datasource)
+    3. Restart app server
 
 ## 2. Configure logging
 
