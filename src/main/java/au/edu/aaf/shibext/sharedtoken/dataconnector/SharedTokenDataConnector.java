@@ -68,23 +68,25 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
                                                                AttributeResolverWorkContext workContext)
             throws ResolutionException {
 
-        LOG.debug("Resolving SharedToken");
-        LOG.debug("generatedAttributeId is " + generatedAttributeId);
-        LOG.debug("sourceAttributeId is " + sourceAttributeId);
+        LOG.debug("Resolving SharedToken... generatedAttributeId is {}, sourceAttributeId is {} ",
+                generatedAttributeId, sourceAttributeId);
 
         String resolvedSourceIdAttribute = getSourceAttributeValue(workContext);
         String idpIdentifier = resolutionContext.getAttributeIssuerID();
 
-        LOG.debug("Generating auEduPersonSharedToken. Resolved sourceAttributeId as {}"
-                + ", idpIdentifier is {}, salt is {}", resolvedSourceIdAttribute, idpIdentifier, salt);
+        String uid = resolutionContext.getPrincipal();
 
-        // TODO generation if not in database, otherwise use db value
-        sharedTokenDAO.getSharedToken("rianniello"); // TEMP
+        // Think about transactions here
+        String sharedToken = sharedTokenDAO.getSharedToken(uid);
 
-        String auEduPersonSharedToken = auEduPersonSharedTokenGenerator.generate(resolvedSourceIdAttribute,
-                idpIdentifier, salt);
+        if (sharedToken == null) {
+            sharedToken = auEduPersonSharedTokenGenerator.generate(resolvedSourceIdAttribute,
+                    idpIdentifier, salt);
 
-        IdPAttribute auEduPersonSharedTokenAttribute = buildAuEduPersonSharedTokenAttribute(auEduPersonSharedToken);
+            sharedTokenDAO.persistSharedToken(uid, sharedToken);
+        }
+
+        IdPAttribute auEduPersonSharedTokenAttribute = buildAuEduPersonSharedTokenAttribute(sharedToken);
         Map<String, IdPAttribute> attributes = new LazyMap<>();
         attributes.put(auEduPersonSharedTokenAttribute.getId(), auEduPersonSharedTokenAttribute);
 

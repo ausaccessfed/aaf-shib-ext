@@ -17,7 +17,8 @@ import java.util.List;
 public class JDBCSharedTokenDAO implements SharedTokenDAO {
 
     private static final Logger LOG = LoggerFactory.getLogger(JDBCSharedTokenDAO.class);
-    private static final String QUERY_SELECT_SHARED_TOKEN = "select sharedtoken from tb_st where uid = ?";
+    private static final String SELECT_SHARED_TOKEN = "select sharedtoken from tb_st where uid = ?";
+    private static final String INSERT_SHARED_TOKEN = "insert into tb_st(uid, sharedtoken) values (?, ?)";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -38,12 +39,11 @@ public class JDBCSharedTokenDAO implements SharedTokenDAO {
      */
     @Override
     public String getSharedToken(String uid) {
-        if (StringUtils.isBlank(uid)) {
-            throw new IllegalArgumentException("uid must not be null or blank");
-        }
-
         LOG.debug("getSharedToken with uid '{}'", uid);
-        List<String> uids = jdbcTemplate.query(QUERY_SELECT_SHARED_TOKEN,
+
+        verifyArgumentIsNotBlankOrNull(uid, "uid");
+
+        List<String> uids = jdbcTemplate.query(SELECT_SHARED_TOKEN,
                 new Object[]{uid}, (rs, rowNum) -> {
                     return rs.getString("sharedtoken");
                 });
@@ -56,5 +56,28 @@ public class JDBCSharedTokenDAO implements SharedTokenDAO {
 
         LOG.debug("sharedToken not found");
         return null;
+    }
+
+    /**
+     * Persists SharedToken for an associated uid.
+     *
+     * @param uid         The user identifier (primary key) to save
+     * @param sharedToken the SharedToken value to save
+     */
+    @Override
+    public void persistSharedToken(String uid, String sharedToken) {
+        LOG.debug("Persisting shared token with uid '{}' and sharedToken '{}' ", uid, sharedToken);
+
+        verifyArgumentIsNotBlankOrNull(uid, "uid");
+        verifyArgumentIsNotBlankOrNull(sharedToken, "sharedToken");
+
+        int affectedRows = jdbcTemplate.update(INSERT_SHARED_TOKEN, uid, sharedToken);
+        LOG.debug("{} affected rows when persisting shared token", affectedRows);
+    }
+
+    private void verifyArgumentIsNotBlankOrNull(String arg, String argumentName) {
+        if (StringUtils.isBlank(arg)) {
+            throw new IllegalArgumentException(argumentName + " cannot be blank or null");
+        }
     }
 }

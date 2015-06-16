@@ -13,4 +13,12 @@ public interface SharedTokenDAO {
      * @return The SharedToken value
      */
     String getSharedToken(String uid);
+
+    /**
+     * Persists SharedToken with an associated uid.
+     *
+     * @param uid         The user identifier (primary key) to save
+     * @param sharedToken the SharedToken value to save
+     */
+    void persistSharedToken(String uid, String sharedToken);
 }

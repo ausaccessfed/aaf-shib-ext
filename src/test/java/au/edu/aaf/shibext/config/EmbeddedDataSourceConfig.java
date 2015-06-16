@@ -10,7 +10,7 @@ import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import javax.naming.NamingException;
 
 /**
- * Creates an in-memory database and registers the datasource in JNDI.
+ * Configuration for tests requiring an in-memory database.
  */
 @Configuration
 public class EmbeddedDataSourceConfig {
@@ -20,6 +20,12 @@ public class EmbeddedDataSourceConfig {
      */
     public static final String DATASOURCE_ID = "jdbc/DS_idp_admin";
 
+    /**
+     * Creates an in-memory database and registers the datasource in JNDI.
+     *
+     * @return EmbeddedDatabase instance
+     * @throws NamingException
+     */
     @Bean(destroyMethod = "shutdown")
     public EmbeddedDatabase dataSource() throws NamingException {
         EmbeddedDatabase dataSource = new EmbeddedDatabaseBuilder()

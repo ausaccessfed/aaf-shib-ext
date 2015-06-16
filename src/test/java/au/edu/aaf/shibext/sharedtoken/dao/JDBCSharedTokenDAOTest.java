@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,6 +24,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = EmbeddedDataSourceConfig.class, loader = AnnotationConfigContextLoader.class)
 public class JDBCSharedTokenDAOTest {
+
+    private static final String EXISTING_VALID_SHARED_TOKEN = "IpdpeFs-WlMqjaC8l-lO1_tJme8";
+    private static final String EXSITING_VALID_UID = "rianniello";
+    private static final String NEW_VALID_SHARED_TOKEN = "WlMqjaC8l-pdlMqjs-lO1peF_e8ItJm";
+    private static final String NEW_VALID_UID = "smangelsdorf";
+    private static final String INVALID_UID = "uid cannot be blank or null";
+    private static final String INVALID_SHARED_TOKEN = "sharedToken cannot be blank or null";
 
     private JDBCSharedTokenDAO jdbcSharedTokenDAO;
 
@@ -46,8 +54,8 @@ public class JDBCSharedTokenDAOTest {
 
     @Test
     public void checkRetrievesSharedTokenWhenUserExists() {
-        assertThat(jdbcSharedTokenDAO.getSharedToken("rianniello"),
-                is(equalTo("IpdpeFs-WlMqjaC8l-lO1_tJme8")));
+        assertThat(jdbcSharedTokenDAO.getSharedToken(EXSITING_VALID_UID),
+                is(equalTo(EXISTING_VALID_SHARED_TOKEN)));
     }
 
     @Test
@@ -57,17 +65,58 @@ public class JDBCSharedTokenDAOTest {
     }
 
     @Test
-    public void throwIllegalArgumentExceptionWhenInputIsNull() {
+    public void getSharedTokenThrowsIllegalArgumentExceptionWhenInputIsNull() {
         exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("uid must not be null or blank");
+        exception.expectMessage(INVALID_UID);
         jdbcSharedTokenDAO.getSharedToken(null);
     }
 
     @Test
-    public void throwIllegalArgumentExceptionWhenInputIsBlank() {
+    public void getSharedTokenThrowsIllegalArgumentExceptionWhenInputIsBlank() {
         exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("uid must not be null or blank");
+        exception.expectMessage(INVALID_UID);
         jdbcSharedTokenDAO.getSharedToken(StringUtils.EMPTY);
+    }
+
+    @Test
+    public void persistSharedTokenThrowsIllegalArgumentExceptionWithNullUID() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage(INVALID_UID);
+        jdbcSharedTokenDAO.persistSharedToken(null, NEW_VALID_SHARED_TOKEN);
+    }
+
+    @Test
+    public void persistSharedTokenThrowsIllegalArgumentExceptionWithNullSharedToken() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage(INVALID_SHARED_TOKEN);
+        jdbcSharedTokenDAO.persistSharedToken(NEW_VALID_UID, null);
+    }
+
+    @Test
+    public void persistSharedTokenThrowsIllegalArgumentExceptionWithBlankUID() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage(INVALID_UID);
+        jdbcSharedTokenDAO.persistSharedToken(StringUtils.EMPTY, NEW_VALID_SHARED_TOKEN);
+    }
+
+    @Test
+    public void persistSharedTokenThrowsIllegalArgumentExceptionWithBlankSharedToken() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage(INVALID_SHARED_TOKEN);
+        jdbcSharedTokenDAO.persistSharedToken(NEW_VALID_UID, StringUtils.EMPTY);
+    }
+
+    @Test
+    public void persistsSharedTokenAsExpected() {
+        jdbcSharedTokenDAO.persistSharedToken(NEW_VALID_UID, NEW_VALID_SHARED_TOKEN);
+        assertThat(jdbcSharedTokenDAO.getSharedToken(NEW_VALID_UID),
+                is(equalTo(NEW_VALID_SHARED_TOKEN)));
+    }
+
+    @Test
+    public void persistsSharedTokenWhenAlreadyExistsThrowsException() {
+        exception.expect(DuplicateKeyException.class);
+        jdbcSharedTokenDAO.persistSharedToken(EXSITING_VALID_UID, NEW_VALID_SHARED_TOKEN);
     }
 
 }

@@ -88,6 +88,7 @@ public class SharedTokenDataConnectorTest {
         when(mockedAttributeMap.get(SOURCE_ATTRIBUTE_ID)).thenReturn(resolvedAttributeDefinition);
         when(mockedIdPAttribute.getValues()).thenReturn(idPAttributeValues);
         when(mockAttributeResolutionContext.getAttributeIssuerID()).thenReturn(IDP_IDENTIFIER);
+        when(mockAttributeResolutionContext.getPrincipal()).thenReturn(uniqueUserIdentifier);
 
         Map<String, IdPAttribute> result = sharedTokenDataConnector.doDataConnectorResolve
                 (mockAttributeResolutionContext, mockAttributeResolverWorkContext);
@@ -96,6 +97,42 @@ public class SharedTokenDataConnectorTest {
         assertThat(result.containsKey(GENERATED_ATTRIBUTE_ID), is(true));
         assertThat(result.get(GENERATED_ATTRIBUTE_ID).getValues().get(0).getValue(),
                 is("rXjBo0Z9gQkCLmz_08IcYCJej6w"));
+    }
+
+    @Test
+    public void ensureResolvesAuEduPersonSharedTokenForExistingUser() throws ResolutionException {
+        final String existingUniqueUserIdentifier = "rianniello";
+
+        @SuppressWarnings(UNCHECKED)
+        Map<String, ResolvedAttributeDefinition> mockedAttributeMap = mock(Map.class);
+
+        AttributeDefinition mockedAttributeDefinition = mock(AttributeDefinition.class);
+        IdPAttribute mockedIdPAttribute = mock(IdPAttribute.class);
+        when(mockedAttributeDefinition.isInitialized()).thenReturn(true);
+        when(mockedAttributeDefinition.isDestroyed()).thenReturn(false);
+        ResolvedAttributeDefinition resolvedAttributeDefinition = new ResolvedAttributeDefinition(
+                mockedAttributeDefinition, mockedIdPAttribute);
+
+        Set<Map.Entry<String, ResolvedAttributeDefinition>> entrySet = new HashSet<>();
+        entrySet.add(new AbstractMap.SimpleEntry<>(SOURCE_ATTRIBUTE_ID, resolvedAttributeDefinition));
+
+        List<IdPAttributeValue<?>> idPAttributeValues = new ArrayList<>();
+        idPAttributeValues.add(new StringAttributeValue(existingUniqueUserIdentifier));
+
+        when(mockAttributeResolverWorkContext.getResolvedIdPAttributeDefinitions()).thenReturn(mockedAttributeMap);
+        when(mockedAttributeMap.entrySet()).thenReturn(entrySet);
+        when(mockedAttributeMap.get(SOURCE_ATTRIBUTE_ID)).thenReturn(resolvedAttributeDefinition);
+        when(mockedIdPAttribute.getValues()).thenReturn(idPAttributeValues);
+        when(mockAttributeResolutionContext.getAttributeIssuerID()).thenReturn(IDP_IDENTIFIER);
+        when(mockAttributeResolutionContext.getPrincipal()).thenReturn(existingUniqueUserIdentifier);
+
+        Map<String, IdPAttribute> result = sharedTokenDataConnector.doDataConnectorResolve
+                (mockAttributeResolutionContext, mockAttributeResolverWorkContext);
+
+        assertThat(result.size(), is(1));
+        assertThat(result.containsKey(GENERATED_ATTRIBUTE_ID), is(true));
+        assertThat(result.get(GENERATED_ATTRIBUTE_ID).getValues().get(0).getValue(),
+                is("IpdpeFs-WlMqjaC8l-lO1_tJme8"));
     }
 
     @Test
@@ -179,5 +216,7 @@ public class SharedTokenDataConnectorTest {
         }
         fail("Expected ResolutionException");
     }
+
+
 }
 
