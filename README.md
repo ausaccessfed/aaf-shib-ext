@@ -10,7 +10,7 @@ The following features are provided:
 **IMPORTANT:** The generation of the auEduPersonSharedToken relies on the user's identifier (`sourceAttributeID`),  
 the IdP's Entity ID  and the private seed (`salt`). Change of the inputs will change the auEduPersonSharedToken value.
 This is likely to happen due to the change of the user's identifier, home institution, upgrade of the IdP and so on.
-Therefore in a production environment, the auEduPersonSharedToken must be only generated **once** and persisted in 
+In a production environment, the auEduPersonSharedToken must be only generated **once** then persisted in 
 the institution's database for future use.
 
 # Requirements
@@ -22,16 +22,18 @@ backups and monitoring for this database. **Loss of this data will disable feder
 ## 1. Configure database
 
 Set up your database with the following schema [src/test/resources/schema.sql](src/test/resources/schema.sql).
-For example, to configure a local MySQL instance follow the commands:
 
-1. Create user
+For example, to configure a local MySQL instance:
+
+Firstly create the mysql user:
 ```
 $ mysql
 mysql> create user 'idp_admin'@'localhost' identified by 'IDP_ADMIN_PASSWORD';
 mysql> grant all privileges on *.* to 'idp_admin'@'localhost' with grant option;
 mysql> exit;
 ```
-2. Create database
+
+Then create database:
 ```
 $ mysql -u idp_admin -p
 mysql> CREATE DATABASE idp_db;
