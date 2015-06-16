@@ -8,15 +8,15 @@ The following features are provided:
 - Database integration for storing and retrieving auEduPersonSharedToken values.  
 
 **IMPORTANT:** The generation of the auEduPersonSharedToken relies on the user's identifier (`sourceAttributeID`),  
-the IdP's Entity ID  and the private seed (`salt`). Change of the inputs will change the auEduPersonSharedToken value
-. This is likely to happen due to the change of the user's identifier, home institution, upgrade of the IdP and so on
-. Therefore, in production environment, the auEduPersonSharedToken must be only generated **once** and persisted in 
+the IdP's Entity ID  and the private seed (`salt`). Change of the inputs will change the auEduPersonSharedToken value.
+This is likely to happen due to the change of the user's identifier, home institution, upgrade of the IdP and so on.
+Therefore in a production environment, the auEduPersonSharedToken must be only generated **once** and persisted in 
 the institution's database for future use.
 
 # Requirements
 - Shibboleth IdP 3.x operating with Java 8 or later.
 - A database for auEduPersonSharedToken storage. It is **strongly** recommended administrators configure regular 
-backups and monitoring for this database. 
+backups and monitoring for this database. **Loss of this data will disable federated access for your users**.
 
 # Deployment
 ## 1. Configure database
