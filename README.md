@@ -21,7 +21,7 @@ backups and monitoring for this database. **Loss of this data will disable feder
 # Deployment
 ## 1. Configure database
 
-Set up your database with the following schema [src/test/resources/schema.sql](src/test/resources/schema.sql).
+Set up your database with the following schema [db/schema.sql](db/schema.sql).
 
 For example, to configure a local MySQL instance:
 
@@ -37,7 +37,7 @@ Then create database:
 ```
 $ mysql -u idp_admin -p
 mysql> CREATE DATABASE idp_db;
-mysql> (Paste src/test/resources/schema.sql)
+mysql> (Paste db/schema.sql)
 ```  
 
 ## 2. Configure resolvers

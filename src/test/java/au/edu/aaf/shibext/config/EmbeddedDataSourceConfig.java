@@ -30,7 +30,7 @@ public class EmbeddedDataSourceConfig {
     public EmbeddedDatabase dataSource() throws NamingException {
         EmbeddedDatabase dataSource = new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
-                .addScript("schema.sql")
+                .addScript("file:db/schema.sql")
                 .addScript("seed.sql")
                 .build();
         SimpleNamingContextBuilder builder = new SimpleNamingContextBuilder();
