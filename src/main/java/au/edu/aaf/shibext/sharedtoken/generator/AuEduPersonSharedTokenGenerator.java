@@ -13,7 +13,6 @@ import static org.apache.commons.codec.digest.DigestUtils.sha1;
  * Generates new auEduPersonSharedToken values.
  * <p>
  * The following algorithm is used:
- * <p>
  * <pre>base64(sha1(resolvedSourceAttribute + idpIdentifier + salt))</pre>
  *
  * @author rianniello
