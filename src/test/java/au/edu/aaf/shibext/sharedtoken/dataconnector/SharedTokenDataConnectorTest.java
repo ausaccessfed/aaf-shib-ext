@@ -11,7 +11,9 @@ import net.shibboleth.idp.attribute.resolver.ResolvedAttributeDefinition;
 import net.shibboleth.idp.attribute.resolver.context.AttributeResolutionContext;
 import net.shibboleth.idp.attribute.resolver.context.AttributeResolverWorkContext;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
@@ -28,7 +30,6 @@ import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -62,6 +63,9 @@ public class SharedTokenDataConnectorTest {
         mockAttributeResolutionContext = mock(AttributeResolutionContext.class);
         mockAttributeResolverWorkContext = mock(AttributeResolverWorkContext.class);
     }
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void ensureResolvesAuEduPersonSharedToken() throws ResolutionException {
@@ -136,7 +140,7 @@ public class SharedTokenDataConnectorTest {
     }
 
     @Test
-    public void ensureThatResolutionExceptionIsThrownIfSourceIdentifierCannotBeResolved() {
+    public void ensureThatResolutionExceptionIsThrownIfSourceIdentifierCannotBeResolved() throws ResolutionException {
         @SuppressWarnings(UNCHECKED)
         Map<String, ResolvedAttributeDefinition> mockedAttributeMap = mock(Map.class);
 
@@ -153,19 +157,15 @@ public class SharedTokenDataConnectorTest {
         when(mockedAttributeMap.get(SOURCE_ATTRIBUTE_ID)).thenReturn(resolvedAttributeDefinition);
         when(mockedIdPAttribute.getValues()).thenReturn(idPAttributeValues);
 
-        try {
-            sharedTokenDataConnector.doDataConnectorResolve(mockAttributeResolutionContext,
-                    mockAttributeResolverWorkContext);
-        } catch (ResolutionException e) {
-            assertThat(e.getMessage(), is("Value 'uid' could not be resolved"));
-            return;
-        }
-        fail("Expected ResolutionException");
+        exception.expect(ResolutionException.class);
+        exception.expectMessage("Value 'uid' could not be resolved");
 
+        sharedTokenDataConnector.doDataConnectorResolve(mockAttributeResolutionContext,
+                mockAttributeResolverWorkContext);
     }
 
     @Test
-    public void ensureResolutionExceptionIsThrownIfSourceAttributeDoesNotResolveAsString() {
+    public void ensureResolutionExceptionIsThrownIfSourceAttributeDoesNotResolveAsString() throws ResolutionException {
 
         @SuppressWarnings(UNCHECKED)
         Map<String, ResolvedAttributeDefinition> mockedAttributeMap = mock(Map.class);
@@ -188,18 +188,16 @@ public class SharedTokenDataConnectorTest {
         when(mockedAttributeMap.get(SOURCE_ATTRIBUTE_ID)).thenReturn(resolvedAttributeDefinition);
         when(mockedIdPAttribute.getValues()).thenReturn(idPAttributeValues);
 
-        try {
-            sharedTokenDataConnector.doDataConnectorResolve(mockAttributeResolutionContext,
-                    mockAttributeResolverWorkContext);
-        } catch (ResolutionException e) {
-            assertThat(e.getMessage(), is("Value 'uid' must resolve to a String"));
-            return;
-        }
-        fail("Expected ResolutionException");
+        exception.expect(ResolutionException.class);
+        exception.expectMessage("Value 'uid' must resolve to a String");
+
+        sharedTokenDataConnector.doDataConnectorResolve(mockAttributeResolutionContext,
+                mockAttributeResolverWorkContext);
+
     }
 
     @Test
-    public void ensureResolutionExceptionIsThrownIfSourceAttributeIsNull() {
+    public void ensureResolutionExceptionIsThrownIfSourceAttributeIsNull() throws ResolutionException {
 
         @SuppressWarnings(UNCHECKED)
         Map<String, ResolvedAttributeDefinition> mockedAttributeMap = mock(Map.class);
@@ -207,14 +205,12 @@ public class SharedTokenDataConnectorTest {
         when(mockAttributeResolverWorkContext.getResolvedIdPAttributeDefinitions()).thenReturn(mockedAttributeMap);
         when(mockedAttributeMap.get(SOURCE_ATTRIBUTE_ID)).thenReturn(null);
 
-        try {
-            sharedTokenDataConnector.doDataConnectorResolve(mockAttributeResolutionContext,
-                    mockAttributeResolverWorkContext);
-        } catch (ResolutionException e) {
-            assertThat(e.getMessage(), is("Value 'uid' could not be resolved"));
-            return;
-        }
-        fail("Expected ResolutionException");
+        exception.expect(ResolutionException.class);
+        exception.expectMessage("Value 'uid' could not be resolved");
+
+        sharedTokenDataConnector.doDataConnectorResolve(mockAttributeResolutionContext,
+                mockAttributeResolverWorkContext);
+
     }
 
 
