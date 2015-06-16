@@ -1,10 +1,12 @@
 # AAF Shibboleth Extensions
 
-This library enables auEduPersonSharedToken on Shibboleth IdP 3.x.
+A [Shibboleth IdP custom extension](https://wiki.shibboleth.net/confluence/display/SHIB2/IdPDevCustomExtension) which 
+enables [auEduPersonSharedToken](http://wiki.aaf.edu.au/tech-info/attributes/auedupersonsharedtoken) for Shibboleth 
+IdP 3.x.
 
 The following features are provided:
 
-- [auEduPersonSharedToken](http://wiki.aaf.edu.au/tech-info/attributes/auedupersonsharedtoken) generation.
+- auEduPersonSharedToken generation.
 - Database integration for storing and retrieving auEduPersonSharedToken values.  
 
 **IMPORTANT:** The generation of the auEduPersonSharedToken relies on the user's identifier (`sourceAttributeID`),  
