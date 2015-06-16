@@ -1,10 +1,44 @@
 # AAF Shibboleth Extensions
 
-Shibboleth extension for generating auEduPersonSharedToken.
+This library enables auEduPersonSharedToken on Shibboleth IdP 3.x.
+
+The following features are provided:
+
+- [auEduPersonSharedToken](http://wiki.aaf.edu.au/tech-info/attributes/auedupersonsharedtoken) generation.
+- Database integration for storing and retrieving auEduPersonSharedToken values.  
+
+**IMPORTANT:** The generation of the auEduPersonSharedToken relies on the user's identifier (`sourceAttributeID`),  
+the IdP's Entity ID  and the private seed (`salt`). Change of the inputs will change the auEduPersonSharedToken value
+. This is likely to happen due to the change of the user's identifier, home institution, upgrade of the IdP and so on
+. Therefore, in production environment, the auEduPersonSharedToken must be only generated **once** and persisted in 
+the institution's database for future use.
+
+# Requirements
+- Shibboleth IdP 3.x operating with Java 8 or later.
+- A database for auEduPersonSharedToken storage. It is **strongly** recommended administrators configure regular 
+backups and monitoring for this database. 
 
 # Deployment
+## 1. Configure database
 
-## 1. Configure resolvers
+Set up your database with the following schema [src/test/resources/schema.sql](src/test/resources/schema.sql).
+For example, to configure a local MySQL instance follow the commands:
+
+1. Create user
+```
+$ mysql
+mysql> create user 'idp_admin'@'localhost' identified by 'IDP_ADMIN_PASSWORD';
+mysql> grant all privileges on *.* to 'idp_admin'@'localhost' with grant option;
+mysql> exit;
+```
+2. Create database
+```
+$ mysql -u idp_admin -p
+mysql> CREATE DATABASE idp_db;
+mysql> (Paste src/test/resources/schema.sql)
+```  
+
+## 2. Configure resolvers
 
 in `$IDP_HOME/conf/attribute-resolver.xml`:
 
@@ -40,7 +74,7 @@ for installing a JNDI datasource. Also ensure the specified JDBC driver is on th
     2. Configure a [JNDI Datasource](https://wiki.eclipse.org/Jetty/Howto/Configure_JNDI_Datasource)
     3. Restart app server
 
-## 2. Configure logging
+## 3. Configure logging
 
 Use the pattern: `"au.edu.aaf.shibext"` in your logging configuration to enable logging.
 
@@ -50,7 +84,7 @@ For example, Shibboleth's `$IDP_HOME/conf/logback.xml` can use the configuration
 ```
 Unless specified, the log information will appear in `$IDP_HOME/logs/idp-process.log`.
 
-## 3. Installing the library
+## 4. Installing the library
 
 1. Copy the jar file to `$IDP_HOME/edit-webapp/WEB-INF/lib/`
 2. Re-run the installer `sh $IDP_HOME/bin/build.sh`
