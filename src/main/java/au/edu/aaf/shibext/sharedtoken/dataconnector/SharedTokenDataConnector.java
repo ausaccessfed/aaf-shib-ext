@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Retrieves an auEduPersonSharedToken. This value may exist in the database, otherwise a new value is generated.
+ * Retrieves an auEduPersonSharedToken — this value may exist in the database, otherwise a new value is generated.
  *
  * @author rianniello
  * @see AuEduPersonSharedTokenGenerator
@@ -76,7 +76,6 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
 
         String uid = resolutionContext.getPrincipal();
 
-        // Think about transactions here
         String sharedToken = sharedTokenDAO.getSharedToken(uid);
 
         if (sharedToken == null) {

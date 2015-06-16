@@ -34,8 +34,8 @@ this value **must never change**. Please keep a copy of this value. This value c
 command: 
 `openssl rand -base64 36 2>/dev/null`
 - `dataSource`: the container managed datasource identifier. Please see the relevant application server's instructions 
-for installing a JNDI Datasource. Also ensure the specified JDBC drivers on the classpath of your application server.
- For example, to configure a MySQL JNDI Datasource for Jetty:
+for installing a JNDI datasource. Also ensure the specified JDBC driver is on the classpath of your application server.
+ For example, to configure a MySQL JNDI datasource for Jetty:
     1. Place [mysql-connector-java-5.1.35-bin.jar](http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.35.tar.gz) in `/opt/jetty/lib/ext/`
     2. Configure a [JNDI Datasource](https://wiki.eclipse.org/Jetty/Howto/Configure_JNDI_Datasource)
     3. Restart app server
