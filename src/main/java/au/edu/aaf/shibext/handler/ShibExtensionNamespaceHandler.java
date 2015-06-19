@@ -1,6 +1,6 @@
 package au.edu.aaf.shibext.handler;
 
-import au.edu.aaf.shibext.sharedtoken.SharedTokenDataConnectorBeanDefinitionParser;
+import au.edu.aaf.shibext.sharedtoken.dataconnector.SharedTokenDataConnectorBeanDefinitionParser;
 import net.shibboleth.ext.spring.util.BaseSpringNamespaceHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

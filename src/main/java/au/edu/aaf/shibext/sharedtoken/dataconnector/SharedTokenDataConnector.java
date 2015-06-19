@@ -1,5 +1,8 @@
-package au.edu.aaf.shibext.sharedtoken;
+package au.edu.aaf.shibext.sharedtoken.dataconnector;
 
+import au.edu.aaf.shibext.sharedtoken.dao.JDBCSharedTokenDAO;
+import au.edu.aaf.shibext.sharedtoken.dao.SharedTokenDAO;
+import au.edu.aaf.shibext.sharedtoken.generator.AuEduPersonSharedTokenGenerator;
 import net.shibboleth.idp.attribute.IdPAttribute;
 import net.shibboleth.idp.attribute.IdPAttributeValue;
 import net.shibboleth.idp.attribute.StringAttributeValue;
@@ -12,16 +15,18 @@ import net.shibboleth.utilities.java.support.collection.LazyMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Retrieves an auEduPersonSharedToken. This value may exist in the database, otherwise a new value is generated.
+ * Retrieves an auEduPersonSharedToken — this value may exist in the database, otherwise a new value is generated.
  *
  * @author rianniello
  * @see AuEduPersonSharedTokenGenerator
+ * @see SharedTokenDAO
  */
 public class SharedTokenDataConnector extends AbstractDataConnector {
 
@@ -49,6 +54,11 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
     private AuEduPersonSharedTokenGenerator auEduPersonSharedTokenGenerator = new AuEduPersonSharedTokenGenerator();
 
     /**
+     * Used to retrieve and store SharedToken values.
+     */
+    private SharedTokenDAO sharedTokenDAO;
+
+    /**
      * Resolves the generatedAttributeId (auEduPersonSharedToken) value.
      *
      * @throws net.shibboleth.idp.attribute.resolver.ResolutionException if sourceAttributeId cannot be resolved
@@ -58,21 +68,24 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
                                                                AttributeResolverWorkContext workContext)
             throws ResolutionException {
 
-        LOG.debug("Resolving SharedToken");
-        LOG.debug("generatedAttributeId is " + generatedAttributeId);
-        LOG.debug("sourceAttributeId is " + sourceAttributeId);
+        LOG.debug("Resolving SharedToken... generatedAttributeId is {}, sourceAttributeId is {} ",
+                generatedAttributeId, sourceAttributeId);
 
         String resolvedSourceIdAttribute = getSourceAttributeValue(workContext);
         String idpIdentifier = resolutionContext.getAttributeIssuerID();
 
-        LOG.debug("Generating auEduPersonSharedToken. Resolved sourceAttributeId as {}"
-                 + ", idpIdentifier is {}, salt is {}", resolvedSourceIdAttribute, idpIdentifier, salt);
+        String uid = resolutionContext.getPrincipal();
 
-        // TODO generation if not in database, otherwise use db value
-        String auEduPersonSharedToken = auEduPersonSharedTokenGenerator.generate(resolvedSourceIdAttribute,
-                idpIdentifier, salt);
+        String sharedToken = sharedTokenDAO.getSharedToken(uid);
 
-        IdPAttribute auEduPersonSharedTokenAttribute = buildAuEduPersonSharedTokenAttribute(auEduPersonSharedToken);
+        if (sharedToken == null) {
+            sharedToken = auEduPersonSharedTokenGenerator.generate(resolvedSourceIdAttribute,
+                    idpIdentifier, salt);
+
+            sharedTokenDAO.persistSharedToken(uid, sharedToken);
+        }
+
+        IdPAttribute auEduPersonSharedTokenAttribute = buildAuEduPersonSharedTokenAttribute(sharedToken);
         Map<String, IdPAttribute> attributes = new LazyMap<>();
         attributes.put(auEduPersonSharedTokenAttribute.getId(), auEduPersonSharedTokenAttribute);
 
@@ -120,6 +133,7 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
 
     /**
      * {@link SharedTokenDataConnector#generatedAttributeId}.
+     *
      * @param generatedAttributeId {@link SharedTokenDataConnector#generatedAttributeId}.
      */
     public void setGeneratedAttributeId(String generatedAttributeId) {
@@ -128,6 +142,7 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
 
     /**
      * {@link SharedTokenDataConnector#sourceAttributeId}.
+     *
      * @param sourceAttributeId {@link SharedTokenDataConnector#sourceAttributeId}.
      */
     public void setSourceAttributeId(String sourceAttributeId) {
@@ -136,9 +151,20 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
 
     /**
      * {@link SharedTokenDataConnector#salt}.
+     *
      * @param salt {@link SharedTokenDataConnector#salt}.
      */
     public void setSalt(String salt) {
         this.salt = salt;
     }
+
+    /**
+     * Builds sharedTokenDAO using dataSource.
+     *
+     * @param dataSource The JNDI/container managed DataSource.
+     */
+    public void setDataSource(DataSource dataSource) {
+        this.sharedTokenDAO = new JDBCSharedTokenDAO(dataSource);
+    }
+
 }

@@ -1,4 +1,4 @@
-package au.edu.aaf.shibext.sharedtoken;
+package au.edu.aaf.shibext.sharedtoken.generator;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
