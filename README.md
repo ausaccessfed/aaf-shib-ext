@@ -27,18 +27,11 @@ Set up your database with the following schema [db/schema.sql](db/schema.sql).
 
 For example, to configure a local MySQL instance:
 
-Firstly create the mysql user:
 ```
 $ mysql
-mysql> create user 'idp_admin'@'localhost' identified by 'IDP_ADMIN_PASSWORD';
-mysql> grant all privileges on *.* to 'idp_admin'@'localhost' with grant option;
-mysql> exit;
-```
-
-Then create database:
-```
-$ mysql -u idp_admin -p
-mysql> CREATE DATABASE idp_db;
+mysql> create database idp_db;
+mysql> grant all privileges on idp_db.* to idp_admin@localhost identified by '<your_password>';
+mysql> \u idp_db
 mysql> (Paste db/schema.sql)
 ```  
 
