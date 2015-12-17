@@ -81,7 +81,13 @@ For example, Shibboleth's `$IDP_HOME/conf/logback.xml` can use the configuration
 ```
 Unless specified, the log information will appear in `$IDP_HOME/logs/idp-process.log`.
 
-## 4. Installing the library
+## 4. Building the library
+
+1. Install [Gradle](https://docs.gradle.org/current/userguide/installation.html)
+2. Run the command `gradle install`
+3. Generated jar will be in `build/libs`
+
+## 5. Installing the library
 
 1. Copy the jar file to `$IDP_HOME/edit-webapp/WEB-INF/lib/`
 2. Re-run the installer `sh $IDP_HOME/bin/build.sh`
