@@ -3,7 +3,7 @@ package au.edu.aaf.shibext.sharedtoken.dataconnector;
 import au.edu.aaf.shibext.handler.ShibExtensionNamespaceHandler;
 import au.edu.aaf.shibext.sharedtoken.datasource.DataSourceResolver;
 import net.shibboleth.idp.attribute.resolver.AbstractDataConnector;
-import net.shibboleth.idp.attribute.resolver.spring.dc.AbstractDataConnectorParser;
+import net.shibboleth.idp.attribute.resolver.spring.dc.impl.AbstractDataConnectorParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
