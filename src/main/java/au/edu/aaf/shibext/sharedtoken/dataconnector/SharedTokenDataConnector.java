@@ -110,14 +110,16 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
         LOG.debug("Getting sourceAttributeId '" + sourceAttributeId + "' from resolvedAttributes");
         Map<String, ResolvedAttributeDefinition> resolvedAttributes = workContext.getResolvedIdPAttributeDefinitions();
         if (resolvedAttributes.get(sourceAttributeId) == null) {
-            throwResolutionException("Value '" + sourceAttributeId + "' could not be resolved. Source Attribute ID is Null.");
+            throwResolutionException("Value '" + sourceAttributeId + 
+                                     "' could not be resolved. Source Attribute ID is Null.");
         }
 
         IdPAttribute resolvedAttribute = resolvedAttributes.get(sourceAttributeId).getResolvedAttribute();
         List<IdPAttributeValue<?>> values = resolvedAttribute.getValues();
 
         if (values == null || values.size() != 1) {
-            throwResolutionException("Value '" + sourceAttributeId + "' could not be resolved. Null or multiple values where returned.");
+            throwResolutionException("Value '" + sourceAttributeId + 
+                                     "' could not be resolved. Null or multiple values where returned.");
         }
 
         Object resolvedSourceAttributeObject = values.get(0);
