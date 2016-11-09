@@ -7,7 +7,7 @@ apply plugin: 'jacoco'
 def shibboleth_idp_version = '3.2.0'
 
 group = 'au.edu.aaf'
-version = '1.0.1'
+version = '1.0.2'
 sourceCompatibility = 1.8
 
 repositories {

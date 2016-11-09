@@ -54,6 +54,11 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
     private AuEduPersonSharedTokenGenerator auEduPersonSharedTokenGenerator = new AuEduPersonSharedTokenGenerator();
 
     /**
+     * Primary Key name for the tb_st table.
+     */
+    private String primaryKeyName;
+
+    /**
      * Used to retrieve and store SharedToken values.
      */
     private SharedTokenDAO sharedTokenDAO;
@@ -68,21 +73,21 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
                                                                AttributeResolverWorkContext workContext)
             throws ResolutionException {
 
-        LOG.debug("Resolving SharedToken... generatedAttributeId is {}, sourceAttributeId is {} ",
-                generatedAttributeId, sourceAttributeId);
+        LOG.debug("Resolving SharedToken... generatedAttributeId is {}, sourceAttributeId is {}, primaryKeyName {} ",
+                generatedAttributeId, sourceAttributeId, primaryKeyName);
 
         String resolvedSourceIdAttribute = getSourceAttributeValue(workContext);
         String idpIdentifier = resolutionContext.getAttributeIssuerID();
 
         String uid = resolutionContext.getPrincipal();
 
-        String sharedToken = sharedTokenDAO.getSharedToken(uid);
+        String sharedToken = sharedTokenDAO.getSharedToken(uid, primaryKeyName);
 
         if (sharedToken == null) {
             sharedToken = auEduPersonSharedTokenGenerator.generate(resolvedSourceIdAttribute,
                     idpIdentifier, salt);
 
-            sharedTokenDAO.persistSharedToken(uid, sharedToken);
+            sharedTokenDAO.persistSharedToken(uid, sharedToken, primaryKeyName);
         }
 
         IdPAttribute auEduPersonSharedTokenAttribute = buildAuEduPersonSharedTokenAttribute(sharedToken);
@@ -156,6 +161,24 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
      */
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    /**
+     * {@link SharedTokenDataConnector#primaryKeyName}.
+     *
+     * @param primaryKeyName {@link SharedTokenDataConnector#primaryKeyName}.
+     */
+    public void setPrimaryKeyName(String primaryKeyName) {
+        this.primaryKeyName = primaryKeyName;
+    }
+
+    /**
+     * {@link SharedTokenDataConnector#primaryKeyName}.
+     *
+     * @return primaryKeyName {@link SharedTokenDataConnector#primaryKeyName}.
+     */
+    public String getPrimaryKeyName() {
+        return this.primaryKeyName;
     }
 
     /**

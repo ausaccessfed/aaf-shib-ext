@@ -23,7 +23,7 @@ public class ShibExtensionNamespaceHandler extends BaseSpringNamespaceHandler {
      */
     @Override
     public void init() {
-        LOG.debug("Registering SharedTokenDataConnectorBeanDefinitionParser...");
+        LOG.debug("Registering SharedTokenDataConnectorBeanDefinitionParser...1.0.2");
         registerBeanDefinitionParser(SharedTokenDataConnectorBeanDefinitionParser.TYPE_NAME,
                 new SharedTokenDataConnectorBeanDefinitionParser());
     }
