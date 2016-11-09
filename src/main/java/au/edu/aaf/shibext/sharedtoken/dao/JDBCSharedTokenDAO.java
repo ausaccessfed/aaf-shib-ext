@@ -41,7 +41,7 @@ public class JDBCSharedTokenDAO implements SharedTokenDAO {
         String sqlSelect = (primaryKeyName == null) ? 
                    "select sharedtoken from tb_st where uid = ?" :
                    "select sharedtoken from tb_st where " + primaryKeyName + " = ?";
-        LOG.debug("getSharedToken with '{}' '{}'", primaryKeyName, uid);
+        LOG.debug("getSharedToken with primary key '{}' for user '{}'", primaryKeyName, uid);
 
         verifyArgumentIsNotBlankOrNull(uid, "uid");
 
