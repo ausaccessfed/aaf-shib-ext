@@ -84,7 +84,7 @@ Unless specified, the log information will appear in `$IDP_HOME/logs/idp-process
 ## 4. Building the library
 
 1. Install [Gradle](https://docs.gradle.org/current/userguide/installation.html)
-2. Run the command `gradle install`
+2. Run the command `./gradlew clean build`
 3. Generated jar will be in `build/libs`
 
 ## 5. Installing the library
