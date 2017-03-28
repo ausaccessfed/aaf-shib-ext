@@ -51,25 +51,28 @@ Define the `DataConnector`
                     id="sharedToken"
                     sourceAttributeId="uniqueIdentifier"
                     salt="Ez8m1HDSLBxu0JNcPEywmOpy+apq4Niw9kEMmAyWbhJqcfAb"
-                    dataSource="jdbc/DS_idp_admin">
+                    dataSource="jdbc/DS_idp_admin"
+                    primaryKeyName="uid">
                     <resolver:Dependency ref="..." />
 </resolver:DataConnector>
 ``` 
 
-Attributes (all mandatory):
+Attributes:
 
-- `id`: the unique identifier for the data connector.
+- `id`: (mandatory) the unique identifier for the data connector.
 - `sourceAttributeID`: used for computing the sharedToken — ideally a unique identifier that never changes.
-- `salt`: a string of random data, used when computing sharedToken. Must be at least 16 characters. N.B. Once set, 
+- `salt`: (mandatory)  a string of random data, used when computing sharedToken. Must be at least 16 characters. N.B. Once set, 
 this value **must never change**. Please keep a copy of this value. This value can be generated with the openssl 
 command: 
 `openssl rand -base64 36 2>/dev/null`
-- `dataSource`: the container managed datasource identifier. Please see the relevant application server's instructions 
+- `dataSource`: (mandatory)  the container managed datasource identifier. Please see the relevant application server's instructions 
 for installing a JNDI datasource. Also ensure the specified JDBC driver is on the classpath of your application server.
  For example, to configure a MySQL JNDI datasource for Jetty:
     1. Place [mysql-connector-java-5.1.35-bin.jar](http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.35.tar.gz) in `/opt/jetty/lib/ext/`
     2. Configure a [JNDI Datasource](https://wiki.eclipse.org/Jetty/Howto/Configure_JNDI_Datasource)
     3. Restart app server
+- `primaryKeyName`: (optional) The column name used for the primary key in the shared token database table. The default is 'uid'
+which works for MySQL databases but is a reserved word for ORACLE.
 
 ## 3. Configure logging
 
