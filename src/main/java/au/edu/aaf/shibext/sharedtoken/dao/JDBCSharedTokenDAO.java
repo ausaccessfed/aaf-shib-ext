@@ -17,6 +17,8 @@ import java.util.List;
 public class JDBCSharedTokenDAO implements SharedTokenDAO {
 
     private static final Logger LOG = LoggerFactory.getLogger(JDBCSharedTokenDAO.class);
+    private static final String SELECT_SHARED_TOKEN = "select sharedtoken from tb_st where %s = ?";
+    private static final String INSERT_SHARED_TOKEN = "insert into tb_st(%s, sharedtoken) values (?, ?)";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -38,13 +40,11 @@ public class JDBCSharedTokenDAO implements SharedTokenDAO {
      */
     @Override
     public String getSharedToken(String uid, String primaryKeyName) {
-        String sqlSelect = (primaryKeyName == null) ? 
-                   "select sharedtoken from tb_st where uid = ?" :
-                   "select sharedtoken from tb_st where " + primaryKeyName + " = ?";
         LOG.debug("getSharedToken with primary key '{}' for user '{}'", primaryKeyName, uid);
 
-        verifyArgumentIsNotBlankOrNull(uid, "uid");
+        String sqlSelect = String.format (SELECT_SHARED_TOKEN, primaryKeyName);
 
+        verifyArgumentIsNotBlankOrNull(uid, "uid");
 
         List<String> uids = jdbcTemplate.query(sqlSelect,
                 new Object[]{uid}, (rs, rowNum) -> {
@@ -70,10 +70,9 @@ public class JDBCSharedTokenDAO implements SharedTokenDAO {
      */
     @Override
     public void persistSharedToken(String uid, String sharedToken, String primaryKeyName) {
-        String sqlInsert = (primaryKeyName == null) ?
-                  "insert into tb_st(uid, sharedtoken) values (?, ?)" :
-                  "insert into tb_st(" + primaryKeyName + ", sharedtoken) values (?, ?)";
         LOG.debug("Persisting shared token with '{}' '{}' and sharedToken '{}' ", primaryKeyName, uid, sharedToken);
+
+        String sqlInsert = String.format (INSERT_SHARED_TOKEN, primaryKeyName);
 
         verifyArgumentIsNotBlankOrNull(uid, "uid");
         verifyArgumentIsNotBlankOrNull(sharedToken, "sharedToken");
