@@ -119,7 +119,8 @@ public class SharedTokenDataConnector extends AbstractDataConnector {
 
         if (values == null || values.size() != 1) {
             throwResolutionException("Attribute '" + sourceAttributeId + 
-                                     "' either didn't resolve any values or resloved multiple values. Only one resolved value is expected.");
+                                     "' either didn't resolve any values or resloved" +
+                                     " multiple values. Only one resolved value is expected.");
         }
 
         Object resolvedSourceAttributeObject = values.get(0);
