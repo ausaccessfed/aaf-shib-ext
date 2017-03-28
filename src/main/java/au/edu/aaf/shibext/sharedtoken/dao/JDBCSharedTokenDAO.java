@@ -17,8 +17,8 @@ import java.util.List;
 public class JDBCSharedTokenDAO implements SharedTokenDAO {
 
     private static final Logger LOG = LoggerFactory.getLogger(JDBCSharedTokenDAO.class);
-    private static final String SELECT_SHARED_TOKEN = "select sharedtoken from tb_st where uid = ?";
-    private static final String INSERT_SHARED_TOKEN = "insert into tb_st(uid, sharedtoken) values (?, ?)";
+    private static final String SELECT_SHARED_TOKEN = "select sharedtoken from tb_st where %s = ?";
+    private static final String INSERT_SHARED_TOKEN = "insert into tb_st(%s, sharedtoken) values (?, ?)";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -35,15 +35,18 @@ public class JDBCSharedTokenDAO implements SharedTokenDAO {
      * Retrieves the SharedToken corresponding to the uid.
      *
      * @param uid The user identifier (primary key)
+     * @param primaryKeyName The name of the primary key
      * @return The SharedToken value or null if not found
      */
     @Override
-    public String getSharedToken(String uid) {
-        LOG.debug("getSharedToken with uid '{}'", uid);
+    public String getSharedToken(String uid, String primaryKeyName) {
+        LOG.debug("getSharedToken with primary key '{}' for user '{}'", primaryKeyName, uid);
+
+        String sqlSelect = String.format (SELECT_SHARED_TOKEN, primaryKeyName);
 
         verifyArgumentIsNotBlankOrNull(uid, "uid");
 
-        List<String> uids = jdbcTemplate.query(SELECT_SHARED_TOKEN,
+        List<String> uids = jdbcTemplate.query(sqlSelect,
                 new Object[]{uid}, (rs, rowNum) -> {
                     return rs.getString("sharedtoken");
                 });
@@ -63,15 +66,18 @@ public class JDBCSharedTokenDAO implements SharedTokenDAO {
      *
      * @param uid         The user identifier (primary key) to save
      * @param sharedToken the SharedToken value to save
+     * @param primaryKeyName The name of the primary key
      */
     @Override
-    public void persistSharedToken(String uid, String sharedToken) {
-        LOG.debug("Persisting shared token with uid '{}' and sharedToken '{}' ", uid, sharedToken);
+    public void persistSharedToken(String uid, String sharedToken, String primaryKeyName) {
+        LOG.debug("Persisting shared token with '{}' '{}' and sharedToken '{}' ", primaryKeyName, uid, sharedToken);
+
+        String sqlInsert = String.format (INSERT_SHARED_TOKEN, primaryKeyName);
 
         verifyArgumentIsNotBlankOrNull(uid, "uid");
         verifyArgumentIsNotBlankOrNull(sharedToken, "sharedToken");
 
-        int affectedRows = jdbcTemplate.update(INSERT_SHARED_TOKEN, uid, sharedToken);
+        int affectedRows = jdbcTemplate.update(sqlInsert, uid, sharedToken);
         LOG.debug("{} affected rows when persisting shared token", affectedRows);
     }
 
