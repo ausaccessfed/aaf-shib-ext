@@ -2,7 +2,7 @@
 
 A [Shibboleth IdP custom extension](https://wiki.shibboleth.net/confluence/display/SHIB2/IdPDevCustomExtension) which 
 enables [auEduPersonSharedToken](http://wiki.aaf.edu.au/tech-info/attributes/auedupersonsharedtoken) for Shibboleth 
-IdP 3.x.
+IdP 3.3.1.
 
 The following features are provided:
 
@@ -16,7 +16,7 @@ In a production environment, the auEduPersonSharedToken must be only generated *
 the institution's database for future use.
 
 # Requirements
-- Shibboleth IdP 3.x operating with Java 8 or later.
+- Shibboleth IdP 3.3.1 operating with Java 8 or later.
 - A database for auEduPersonSharedToken storage. It is **strongly** recommended administrators configure regular 
 backups and monitoring for this database. **Loss of this data will disable federated access for your users**.
 
@@ -87,7 +87,7 @@ Unless specified, the log information will appear in `$IDP_HOME/logs/idp-process
 ## 4. Building the library
 
 1. Install [Gradle](https://docs.gradle.org/current/userguide/installation.html)
-2. Run the command `gradle install`
+2. Run the command `./gradlew clean build`
 3. Generated jar will be in `build/libs`
 
 ## 5. Installing the library

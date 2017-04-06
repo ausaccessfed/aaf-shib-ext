@@ -4,7 +4,7 @@ apply plugin: 'pmd'
 apply plugin: 'checkstyle'
 apply plugin: 'jacoco'
 
-def shibboleth_idp_version = '3.2.0'
+def shibboleth_idp_version = '3.3.1'
 
 group = 'au.edu.aaf'
 version = '1.1.0'
@@ -22,12 +22,18 @@ dependencies {
     compile 'net.shibboleth.idp:idp-attribute-resolver-api:' + shibboleth_idp_version
     compile 'net.shibboleth.idp:idp-attribute-resolver-impl:' + shibboleth_idp_version
     compile 'net.shibboleth.idp:idp-attribute-resolver-spring:' + shibboleth_idp_version
-    compile 'org.springframework:spring-jdbc:4.1.6.RELEASE'
+    compile 'org.springframework:spring-jdbc:4.3.2.RELEASE'
 
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:2.0.5-beta"
-    testCompile 'org.springframework:spring-test:4.1.6.RELEASE'
+    testCompile 'org.springframework:spring-test:4.3.2.RELEASE'
     testCompile 'com.h2database:h2:1.4.187'
+}
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
 findbugs {
