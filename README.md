@@ -2,7 +2,7 @@
 
 A [Shibboleth IdP custom extension](https://wiki.shibboleth.net/confluence/display/SHIB2/IdPDevCustomExtension) which 
 enables [auEduPersonSharedToken](http://wiki.aaf.edu.au/tech-info/attributes/auedupersonsharedtoken) for Shibboleth 
-IdP 3.x.
+IdP 3.3.1.
 
 The following features are provided:
 
@@ -16,7 +16,7 @@ In a production environment, the auEduPersonSharedToken must be only generated *
 the institution's database for future use.
 
 # Requirements
-- Shibboleth IdP 3.x operating with Java 8 or later.
+- Shibboleth IdP 3.3.1 operating with Java 8 or later.
 - A database for auEduPersonSharedToken storage. It is **strongly** recommended administrators configure regular 
 backups and monitoring for this database. **Loss of this data will disable federated access for your users**.
 
@@ -51,25 +51,28 @@ Define the `DataConnector`
                     id="sharedToken"
                     sourceAttributeId="uniqueIdentifier"
                     salt="Ez8m1HDSLBxu0JNcPEywmOpy+apq4Niw9kEMmAyWbhJqcfAb"
-                    dataSource="jdbc/DS_idp_admin">
+                    dataSource="jdbc/DS_idp_admin"
+                    primaryKeyName="uid">
                     <resolver:Dependency ref="..." />
 </resolver:DataConnector>
 ``` 
 
-Attributes (all mandatory):
+Attributes:
 
-- `id`: the unique identifier for the data connector.
+- `id`: (mandatory) the unique identifier for the data connector.
 - `sourceAttributeID`: used for computing the sharedToken — ideally a unique identifier that never changes.
-- `salt`: a string of random data, used when computing sharedToken. Must be at least 16 characters. N.B. Once set, 
+- `salt`: (mandatory)  a string of random data, used when computing sharedToken. Must be at least 16 characters. N.B. Once set, 
 this value **must never change**. Please keep a copy of this value. This value can be generated with the openssl 
 command: 
 `openssl rand -base64 36 2>/dev/null`
-- `dataSource`: the container managed datasource identifier. Please see the relevant application server's instructions 
+- `dataSource`: (mandatory)  the container managed datasource identifier. Please see the relevant application server's instructions 
 for installing a JNDI datasource. Also ensure the specified JDBC driver is on the classpath of your application server.
  For example, to configure a MySQL JNDI datasource for Jetty:
     1. Place [mysql-connector-java-5.1.35-bin.jar](http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.35.tar.gz) in `/opt/jetty/lib/ext/`
     2. Configure a [JNDI Datasource](https://wiki.eclipse.org/Jetty/Howto/Configure_JNDI_Datasource)
     3. Restart app server
+- `primaryKeyName`: (optional) The column name used for the primary key in the shared token database table. The default is 'uid'
+which works for MySQL databases but is a reserved word for ORACLE.
 
 ## 3. Configure logging
 
@@ -84,7 +87,7 @@ Unless specified, the log information will appear in `$IDP_HOME/logs/idp-process
 ## 4. Building the library
 
 1. Install [Gradle](https://docs.gradle.org/current/userguide/installation.html)
-2. Run the command `gradle install`
+2. Run the command `./gradlew clean build`
 3. Generated jar will be in `build/libs`
 
 ## 5. Installing the library

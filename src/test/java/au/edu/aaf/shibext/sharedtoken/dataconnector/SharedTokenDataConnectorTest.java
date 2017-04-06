@@ -41,6 +41,7 @@ public class SharedTokenDataConnectorTest {
     private static final String GENERATED_ATTRIBUTE_ID = "auEduPersonSharedToken";
     private static final String IDP_IDENTIFIER = "https://shib3.aaf.dev.edu.au/idp/shibboleth";
     private static final String SALT = "Ez8m1HDSLBxu0JNcPEywmOpy+apq4Niw9kEMmAyWbhJqcfAb";
+    private static final String PRIMRARY_KEY_NAME = "uid";
     private static final String UNCHECKED = "unchecked";
     private SharedTokenDataConnector sharedTokenDataConnector;
     private AttributeResolutionContext mockAttributeResolutionContext;
@@ -56,6 +57,7 @@ public class SharedTokenDataConnectorTest {
         sharedTokenDataConnector.setSourceAttributeId(SOURCE_ATTRIBUTE_ID);
         sharedTokenDataConnector.setSalt(SALT);
         sharedTokenDataConnector.setDataSource(dataSource);
+        sharedTokenDataConnector.setPrimaryKeyName(PRIMRARY_KEY_NAME);
     }
 
     @Before

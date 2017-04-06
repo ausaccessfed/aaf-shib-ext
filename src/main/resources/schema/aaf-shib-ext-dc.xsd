@@ -29,6 +29,13 @@
             </documentation>
           </annotation>
         </attribute>
+        <attribute name="primaryKeyName" type="string" default="uid" use="optional">
+          <annotation>
+            <documentation>
+              The primary key name of the tb_st table.
+            </documentation>
+          </annotation>
+        </attribute>
         <attribute name="dataSource" type="string" use="required">
           <annotation>
             <documentation>
