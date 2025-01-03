@@ -25,9 +25,9 @@ dependencies {
     compile 'org.springframework:spring-jdbc:4.3.2.RELEASE'
 
     testCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:2.0.5-beta"
+    testCompile "org.mockito:mockito-core:5.15.2"
     testCompile 'org.springframework:spring-test:4.3.2.RELEASE'
-    testCompile 'com.h2database:h2:1.4.187'
+    testCompile 'com.h2database:h2:2.3.232'
 }
 
 test {
@@ -64,7 +64,7 @@ pmd {
 }
 
 checkstyle {
-    toolVersion = '6.7'
+    toolVersion = '10.21.1'
     configFile = new File(rootDir, "config/checkstyle.xml")
     ignoreFailures = false
     sourceSets = [sourceSets.main, sourceSets.test]
