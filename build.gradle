@@ -4,7 +4,7 @@ apply plugin: 'pmd'
 apply plugin: 'checkstyle'
 apply plugin: 'jacoco'
 
-def shibboleth_idp_version = '3.3.1'
+def shibboleth_idp_version = '4.3.3'
 
 group = 'au.edu.aaf'
 version = '1.1.1'
@@ -25,9 +25,10 @@ dependencies {
     compile 'org.springframework:spring-jdbc:6.2.1'
 
     testCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:2.0.5-beta"
     testCompile 'org.springframework:spring-test:6.2.1'
-    testCompile 'com.h2database:h2:1.4.187'
+    testCompile "org.mockito:mockito-core:5.15.2"
+    testCompile 'org.springframework:spring-test:4.3.2.RELEASE'
+    testCompile 'com.h2database:h2:2.3.232'
 }
 
 test {
@@ -64,7 +65,7 @@ pmd {
 }
 
 checkstyle {
-    toolVersion = '6.7'
+    toolVersion = '10.21.1'
     configFile = new File(rootDir, "config/checkstyle.xml")
     ignoreFailures = false
     sourceSets = [sourceSets.main, sourceSets.test]
@@ -96,7 +97,7 @@ ext {
 }
 
 jacoco {
-    toolVersion = "0.7.5.201505241946"
+    toolVersion = "0.8.12"
 }
 
 jacocoTestReport {
