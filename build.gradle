@@ -22,9 +22,10 @@ dependencies {
     compile 'net.shibboleth.idp:idp-attribute-resolver-api:' + shibboleth_idp_version
     compile 'net.shibboleth.idp:idp-attribute-resolver-impl:' + shibboleth_idp_version
     compile 'net.shibboleth.idp:idp-attribute-resolver-spring:' + shibboleth_idp_version
-    compile 'org.springframework:spring-jdbc:4.3.2.RELEASE'
+    compile 'org.springframework:spring-jdbc:6.2.1'
 
     testCompile 'junit:junit:4.12'
+    testCompile 'org.springframework:spring-test:6.2.1'
     testCompile "org.mockito:mockito-core:5.15.2"
     testCompile 'org.springframework:spring-test:4.3.2.RELEASE'
     testCompile 'com.h2database:h2:2.3.232'
