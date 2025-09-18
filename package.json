@@ -1,7 +1,6 @@
 {
   "name": "app-name",
   "private": true,
-  "dependencies": {},
   "version": "0.1.0",
   "devDependencies": {
     "eslint": "9.35.0",
@@ -14,5 +13,6 @@
   },
   "scripts": {
     "lint": "eslint . --ignore-path .eslintignore --quiet"
-  }
+  },
+  "packageManager": "yarn@4.9.4"
 }
