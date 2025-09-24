@@ -28,7 +28,7 @@ dependencies {
     testCompile 'org.springframework:spring-test:6.2.1'
     testCompile "org.mockito:mockito-core:5.15.2"
     testCompile 'org.springframework:spring-test:4.3.2.RELEASE'
-    testCompile 'com.h2database:h2:2.3.232'
+    testCompile 'com.h2database:h2:2.4.240'
 }
 
 test {
