@@ -65,7 +65,7 @@ pmd {
 }
 
 checkstyle {
-    toolVersion = '10.21.1'
+    toolVersion = '10.26.1'
     configFile = new File(rootDir, "config/checkstyle.xml")
     ignoreFailures = false
     sourceSets = [sourceSets.main, sourceSets.test]
