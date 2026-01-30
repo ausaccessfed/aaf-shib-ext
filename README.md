@@ -1,5 +1,3 @@
-
-
 # AAF Shibboleth Extensions
 
 > ⚠️ **DEPRECATED**
