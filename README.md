@@ -1,4 +1,10 @@
+
+
 # AAF Shibboleth Extensions
+
+> ⚠️ **DEPRECATED**
+>
+> For recent Shibboleth IdP versions, please use [aaf-shibv4-ext](https://github.com/ausaccessfed/aaf-shibv4-ext).
 
 A [Shibboleth IdP custom extension](https://wiki.shibboleth.net/confluence/display/SHIB2/IdPDevCustomExtension) which 
 enables [auEduPersonSharedToken](http://wiki.aaf.edu.au/tech-info/attributes/auedupersonsharedtoken) for Shibboleth 
